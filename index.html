@@ -44,8 +44,7 @@
     padding: 3rem 2rem 2.5rem;
     position: relative;
     overflow: hidden;
-  }
-  header::before {
+  }  header::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -53,7 +52,7 @@
     pointer-events: none;
   }
   .header-inner {
-    max-width: 860px;
+    max-width: 1200px;
     margin: 0 auto;
     position: relative;
   }
@@ -461,15 +460,13 @@
       <span style="font-family:var(--sans); font-size:1.3rem; font-weight:700; letter-spacing:-0.03em; color:white;">Kapital<span style="color:#4ade80;">Plan</span></span>
     </div>
     <div class="header-pill">Unabhängiger Vergleich · Keine Produktempfehlung · <span style="color:rgba(255,255,255,0.6)">Nur für gesetzlich Krankenversicherte</span></div>
-    <h1>Lohnt sich die bAV<br>für <span>dich</span>?</h1>
-    <p class="header-sub">Ehrlicher Vergleich zwischen betrieblicher Altersvorsorge und privatem ETF-Sparplan — mit deinen konkreten Zahlen.</p>
+    <h1>Lohnt sich die betriebliche<br>Altersvorsorge für <span>dich</span>?</h1>
+    <p class="header-sub">Ehrlicher Vergleich zwischen betrieblicher Altersvorsorge (bAV) und privatem ETF-Sparplan — mit deinen konkreten Zahlen.</p>
   </div>
 </header>
 
 <main>
-  <div style="display:grid; grid-template-columns:1fr 340px; gap:1.5rem; max-width:1200px; margin:0 auto; padding:2rem 1.25rem 4rem; align-items:start;">
-
-  <!-- LINKE SPALTE: Rechner -->
+  <div style="max-width:860px; margin:0 auto; padding:2rem 1.25rem 4rem;">
   <div>
     <div class="card-title">Deine Situation eingeben</div>
     <div class="form-grid">
@@ -562,6 +559,13 @@
         <div class="verdict-headline" id="verdict-headline">—</div>
         <div class="verdict-sub" id="verdict-sub">—</div>
       </div>
+    </div>
+
+    <div class="fade" id="affiliate-btn-wrap" style="margin-bottom:1.25rem;">
+      <a id="affiliate-btn" href="https://a.partner-versicherung.de/click.php?partner_id=202298&ad_id=15&deep=rentenversicherung" target="_blank" style="display:block; width:100%; padding:1rem 1.5rem; background:var(--accent); color:white; border-radius:var(--radius-sm); font-family:var(--sans); font-size:0.95rem; font-weight:600; text-align:center; text-decoration:none; letter-spacing:-0.01em; box-shadow:0 2px 8px rgba(26,107,74,0.25); transition:background 0.15s;">
+        Jetzt passende Altersvorsorge finden →
+      </a>
+      <p style="font-size:0.7rem; color:var(--ink-muted); text-align:center; margin-top:0.5rem; font-family:var(--mono);">Kostenlos & unverbindlich · Powered by Tarifcheck</p>
     </div>
 
     <div class="compare-grid fade">
@@ -695,55 +699,14 @@
       <strong>Wichtiger Hinweis:</strong> Dieser Rechner dient ausschließlich zur unverbindlichen Orientierung und stellt keine Finanz-, Steuer- oder Rechtsberatung dar. Alle Berechnungen basieren auf vereinfachten Annahmen und Schätzwerten — individuelle Faktoren wie persönliche Steuersituation, konkrete Vertragsbedingungen oder Änderungen der Gesetzeslage werden nicht vollständig berücksichtigt. Der Rechner gilt für gesetzlich Krankenversicherte (GKV). Die Ergebnisse sind keine Entscheidungsgrundlage für den Abschluss oder die Kündigung eines Vertrags. Für eine verbindliche Einschätzung wende dich an einen unabhängigen, zugelassenen Finanz- oder Steuerberater. Haftung für die Richtigkeit, Vollständigkeit oder Aktualität der Angaben wird nicht übernommen. Stand: 2026.
     </p>
 
+    <div style="text-align:center; margin-top:1rem;" class="fade">
+      <a href="bav-info.html" style="display:inline-flex; align-items:center; gap:0.5rem; font-family:var(--sans); font-size:0.85rem; font-weight:600; color:var(--accent); text-decoration:none; padding:0.6rem 1.2rem; border:1.5px solid var(--accent-border); border-radius:100px; background:var(--accent-bg);">
+        📖 Infos zur bAV — Was du wissen solltest
+      </a>
+    </div>
+
   </div>
-  <!-- RECHTE SPALTE: Sidebar -->
-  <div style="position:sticky; top:1.5rem; display:flex; flex-direction:column; gap:1rem;">
-
-    <div class="card" style="padding:1.5rem;">
-      <div class="card-title">Was ist die bAV?</div>
-      <p style="font-size:0.82rem; line-height:1.7; color:var(--ink-muted);">Die betriebliche Altersvorsorge (bAV) ist eine vom Arbeitgeber organisierte Zusatzrente. Du zahlst einen Teil deines Bruttogehalts direkt in einen Vorsorgevertrag — noch bevor Steuern und Sozialabgaben abgezogen werden. Das ist der sogenannte <strong>Steuervorteil</strong>.</p>
-    </div>
-
-    <div class="card" style="padding:1.5rem;">
-      <div class="card-title">Wann lohnt sich bAV?</div>
-      <p style="font-size:0.82rem; line-height:1.7; color:var(--ink-muted);">Die bAV lohnt sich vor allem wenn dein Arbeitgeber <strong>mehr als 15 % Zuschuss</strong> zahlt und du einen günstigen ETF-basierten Vertrag bekommst. Ohne Zuschuss oder mit einem teuren Altvertrag ist ein privater ETF-Sparplan in den meisten Fällen besser.</p>
-    </div>
-
-    <div class="card" style="padding:1.5rem;">
-      <div class="card-title">Entgeltumwandlung erklärt</div>
-      <p style="font-size:0.82rem; line-height:1.7; color:var(--ink-muted);">Bei der Entgeltumwandlung verzichtest du auf einen Teil deines Bruttogehalts zugunsten der bAV. Du zahlst dadurch <strong>weniger Steuern und Sozialabgaben</strong> — aber auch weniger in die gesetzliche Rentenversicherung. Dieser Effekt ist im Rechner berücksichtigt.</p>
-    </div>
-
-    <div class="card" style="padding:1.5rem;">
-      <div class="card-title">Arbeitgeberwechsel</div>
-      <p style="font-size:0.82rem; line-height:1.7; color:var(--ink-muted);">Ein häufig unterschätztes Risiko: Bei einem Jobwechsel muss der neue Arbeitgeber deinen alten bAV-Vertrag <strong>nicht übernehmen</strong>. Du kannst mit mehreren ruhenden Verträgen enden, die einzeln kaum rentabel sind. Wer häufig den Job wechselt, ist mit einem privaten ETF-Sparplan oft flexibler.</p>
-    </div>
-
-    <div class="card" style="padding:1.5rem;">
-      <div class="card-title">Glossar</div>
-      <div style="font-size:0.8rem; line-height:1.8; color:var(--ink-muted);">
-        <div style="margin-bottom:0.6rem;"><strong style="color:var(--ink);">Effektivkosten</strong><br>Alle jährlichen Kosten eines bAV-Vertrags zusammengefasst. Stehen im Produktinformationsblatt (Strg+F → "Effektivkosten").</div>
-        <div style="margin-bottom:0.6rem;"><strong style="color:var(--ink);">Rentenpunkte</strong><br>Maßeinheit für die gesetzliche Rente. Durch Entgeltumwandlung zahlst du weniger ein und sammelst weniger Rentenpunkte.</div>
-        <div style="margin-bottom:0.6rem;"><strong style="color:var(--ink);">Teilfreistellung</strong><br>Bei ETF-Fonds werden 30 % der Gewinne steuerfrei gestellt — dadurch sinkt die effektive Steuerbelastung.</div>
-        <div><strong style="color:var(--ink);">Nachgelagerte Besteuerung</strong><br>bAV-Auszahlungen werden erst im Rentenalter voll versteuert — anders als beim privaten ETF-Sparplan.</div>
-      </div>
-    </div>
-
-    <div class="card" style="padding:1.5rem; border-color:#f0b84d; background:#fffbf0;">
-      <div class="card-title" style="color:#8a6200;">⚠️ Einschränkungen des Rechners</div>
-      <div style="font-size:0.78rem; line-height:1.8; color:#5a4200;">
-        <div style="margin-bottom:0.4rem;">— Nur für gesetzlich Krankenversicherte</div>
-        <div style="margin-bottom:0.4rem;">— Nur Direktversicherung (häufigster Weg)</div>
-        <div style="margin-bottom:0.4rem;">— Konstante Gehälter und Beiträge angenommen</div>
-        <div style="margin-bottom:0.4rem;">— Zukünftige Gesetzesänderungen nicht berücksichtigt</div>
-        <div style="margin-bottom:0.4rem;">— Rentenpunktminderung als Näherungswert</div>
-        <div>— Keine Berücksichtigung von Vorabpauschale beim ETF</div>
-      </div>
-    </div>
-
-  </div><!-- Ende Sidebar -->
-
-  </div><!-- Ende Grid -->
+  </div>
 </main>
 
 <footer style="background:#1a1a18; color:rgba(255,255,255,0.5); padding:2.5rem 1.5rem; margin-top:2rem;">

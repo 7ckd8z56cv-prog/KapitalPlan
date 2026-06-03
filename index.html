@@ -3,8 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>bAV-Rechner – Lohnt sich die betriebliche Altersvorsorge?</title>
+<title>Betriebliche Altersvorsorge Rechner – Lohnt sich die bAV für dich? | KapitalPlan</title>
+<meta name="description" content="Ehrlicher bAV-Rechner: Vergleich zwischen betrieblicher Altersvorsorge und ETF-Sparplan mit allen Abzügen — Steuern, Krankenversicherung und gesetzliche Rentenminderung inklusive.">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231a4a30'/><text x='16' y='23' font-family='Arial Black,sans-serif' font-size='20' font-weight='900' fill='%234ade80' text-anchor='middle'>K</text></svg>">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -29,6 +31,11 @@
     --mono: 'JetBrains Mono', monospace;
   }
 
+  html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
   body {
     background: var(--bg);
     color: var(--ink);
@@ -36,6 +43,44 @@
     min-height: 100vh;
     line-height: 1.5;
   }
+
+  /* NAV */
+  .nav {
+    background: rgba(15,36,25,0.97);
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .nav-logo {
+    font-size: 1rem;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+  .nav-logo span { color: #4ade80; }
+  .nav-links {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .nav-link {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    padding: 0.4rem 0.85rem;
+    border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: all 0.15s;
+  }
+  .nav-link:hover { background: rgba(255,255,255,0.1); color: white; }
+  .nav-link.active { background: #1a6b4a; color: white; border-color: #1a6b4a; }
 
   /* HEADER */
   header {
@@ -96,6 +141,9 @@
   /* MAIN */
   main {
     background: var(--bg);
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
   }
 
   /* CARD */
@@ -439,6 +487,16 @@
     }
   }
 
+  .bilanz-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  @media (max-width: 500px) {
+    .bilanz-grid { grid-template-columns: 1fr; }
+    .compare-grid { grid-template-columns: 1fr; }
+  }
+
   /* ANIMATE */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(14px); }
@@ -454,6 +512,13 @@
 </head>
 <body>
 
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Kapital<span>Plan</span></a>
+  <div class="nav-links">
+    <a href="bav-info.html" class="nav-link">Infos zur bAV</a>
+  </div>
+</nav>
+
 <header>
   <div class="header-inner">
     <div style="margin-bottom:1.5rem;">
@@ -466,7 +531,7 @@
 </header>
 
 <main>
-  <div style="max-width:860px; margin:0 auto; padding:2rem 1.25rem 4rem;">
+  <div style="max-width:860px; margin:0 auto; padding:2rem 1.25rem 4rem; box-sizing:border-box; width:100%;">
   <div>
     <div class="card-title">Deine Situation eingeben</div>
     <div class="form-grid">
@@ -550,7 +615,15 @@
   </div>
 
   <!-- RESULTS -->
-  <div id="results">
+  <div id="results" style="padding-top:1.5rem;">
+
+    <div class="fade" id="affiliate-btn-wrap" style="margin-bottom:1.25rem; margin-top:0.5rem;">
+      <div style="font-size:0.65rem; font-family:var(--mono); color:var(--ink-muted); text-align:right; margin-bottom:0.3rem; letter-spacing:0.05em;">ANZEIGE</div>
+      <a id="affiliate-btn" href="https://a.partner-versicherung.de/click.php?partner_id=202298&ad_id=15&deep=rentenversicherung" target="_blank" style="display:block; width:100%; padding:1rem 1.5rem; background:#e67e22; color:white; border-radius:var(--radius-sm); font-family:var(--sans); font-size:0.95rem; font-weight:600; text-align:center; text-decoration:none; letter-spacing:-0.01em; box-shadow:0 2px 8px rgba(230,126,34,0.35);">
+        Jetzt passende Altersvorsorge finden →
+      </a>
+      <p style="font-size:0.7rem; color:var(--ink-muted); text-align:center; margin-top:0.5rem; font-family:var(--mono);">Kostenlos & unverbindlich · Powered by Tarifcheck</p>
+    </div>
 
     <div class="verdict fade" id="verdict">
       <div class="verdict-icon" id="verdict-icon">✓</div>
@@ -559,13 +632,6 @@
         <div class="verdict-headline" id="verdict-headline">—</div>
         <div class="verdict-sub" id="verdict-sub">—</div>
       </div>
-    </div>
-
-    <div class="fade" id="affiliate-btn-wrap" style="margin-bottom:1.25rem;">
-      <a id="affiliate-btn" href="https://a.partner-versicherung.de/click.php?partner_id=202298&ad_id=15&deep=rentenversicherung" target="_blank" style="display:block; width:100%; padding:1rem 1.5rem; background:var(--accent); color:white; border-radius:var(--radius-sm); font-family:var(--sans); font-size:0.95rem; font-weight:600; text-align:center; text-decoration:none; letter-spacing:-0.01em; box-shadow:0 2px 8px rgba(26,107,74,0.25); transition:background 0.15s;">
-        Jetzt passende Altersvorsorge finden →
-      </a>
-      <p style="font-size:0.7rem; color:var(--ink-muted); text-align:center; margin-top:0.5rem; font-family:var(--mono);">Kostenlos & unverbindlich · Powered by Tarifcheck</p>
     </div>
 
     <div class="compare-grid fade">
@@ -661,7 +727,7 @@
 
     <div class="card fade" id="bilanz-card">
       <div class="card-title">Gesamtbild bAV — Vorteile & Nachteile</div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+      <div class="bilanz-grid">
 
         <div style="background:#edf7f2; border:1px solid #a8ddc3; border-radius:10px; padding:1.25rem;">
           <div style="font-size:0.68rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#1a6b4a; margin-bottom:0.85rem;">✓ Vorteile heute</div>
@@ -682,13 +748,23 @@
       </p>
     </div>
 
+    <div class="card fade" id="wechsel-warnung" style="display:none; border-left:4px solid #c0392b; background:var(--warn-bg); margin-bottom:1.25rem; padding:1.5rem;">
+      <div style="display:flex; align-items:flex-start; gap:0.75rem;">
+        <div style="font-size:1.25rem; flex-shrink:0; margin-top:0.1rem;">⚠️</div>
+        <div>
+          <div style="font-size:0.78rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--warn); margin-bottom:0.5rem;">Risiko Arbeitgeberwechsel</div>
+          <p style="font-size:0.85rem; color:#5a2020; line-height:1.7;">Dein neuer Arbeitgeber muss deinen alten bAV-Vertrag <strong>nicht übernehmen</strong>. Bei mehreren Jobwechseln über 20+ Jahre könntest du mit mehreren kleinen, unrentablen Verträgen enden. Ein privater ETF-Sparplan bleibt immer bei dir — unabhängig vom Arbeitgeber.</p>
+        </div>
+      </div>
+    </div>
+
     <div class="card fade assumptions">
       <div class="card-title">Annahmen & Vereinfachungen</div>
       <ul>
         <li>ETF-Rendite: 6,5 % p.a. (konservativer MSCI World Schätzwert), abzüglich ~0,2 % TER</li>
-        <li>bAV-Rendite vor Kosten: ETF-Tarif ~6,5 % (hohe Aktienquote), typischer Firmenvertrag ~4 % (gemischte Anlage ~50 % Aktien), Altvertrag ~2,5 % (überwiegend Deckungsstock) — jeweils abzüglich Effektivkosten</li>
-        <li>Steuer- & SV-Ersparnis: vereinfachter Grenzsteuersatz je nach Steuerklasse + ~20,5 % SV-Anteil</li>
-        <li>bAV im Rentenalter: volle Einkommensteuer zum gewählten Satz + Kranken-Vers. & Pflege-Vers. (~18,6 %) nur auf den Teil über dem Freibetrag von 197,75 €/Monat (Stand 2026)</li>
+        <li>bAV-Rendite vor Kosten: ETF-Tarif ~6,5 %, typischer Firmenvertrag ~4 %, Altvertrag ~2,5 % — jeweils abzüglich Effektivkosten</li>
+        <li>Abschlusskosten (Zillmerung): 2,5 % der Beitragssumme bei typischem und altem Vertrag — beim ETF-Tarif nicht eingerechnet</li>
+        <li>bAV im Rentenalter: volle Einkommensteuer + KV 17,5 % auf Teil über Freibetrag 197,75 €/Mo. + PV 3,6 % auf gesamte Rente (Stand 2026)</li>
         <li>ETF: Abgeltungsteuer 26,375 % auf Gewinnanteil nach 30 % Teilfreistellung</li>
         <li>Inflation nicht berücksichtigt — betrifft beide Seiten gleichermaßen</li>
         <li id="wechsel-hinweis" style="display:none">⚠️ Bei Arbeitgeberwechsel können bAV-Verträge verfallen oder ungünstig übertragen werden — wichtiger Faktor bei langen Laufzeiten</li>
@@ -819,9 +895,6 @@ function berechnen() {
   const steuersatzRente = parseFloat(document.getElementById('steuersatz-rente').value) / 100;
 
   // Basisrendite je nach Vertragstyp:
-  // Gut (ETF-Tarif): ~90% Aktienquote → 6,5%
-  // Mittel (Firmenvertrag): ~50% Aktien, Rest Anleihen/Deckungsstock → 4%
-  // Schlecht (Altvertrag): ~20% Aktien, klassischer Deckungsstock → 2,5%
   const bavBasis   = vertrag === 'gut' ? 0.065 : vertrag === 'mittel' ? 0.04 : 0.025;
   const bavKosten  = vertrag === 'gut' ? 0.0055 : vertrag === 'mittel' ? 0.012 : 0.018;
   const bavRendite = bavBasis - bavKosten;
@@ -834,18 +907,28 @@ function berechnen() {
   const bavMonatl  = beitrag + agZuschuss;
   const etfSparrate = eigenNetto;
 
-  const bavKapital = bavMonatl * 12 * ((Math.pow(1 + bavRendite, jahre) - 1) / bavRendite);
+  // Abschlusskosten (Zillmerung): nur bei mittlerem und schlechtem Vertrag
+  // 2,5% der gesamten Beitragssumme, verteilt auf erste 5 Jahre
+  const zillmerProzent = vertrag === 'gut' ? 0 : 0.025;
+  const zillmerKosten = bavMonatl * 12 * jahre * zillmerProzent;
+
+  const bavKapitalBrutto = bavMonatl * 12 * ((Math.pow(1 + bavRendite, jahre) - 1) / bavRendite);
+  // Zillmerkosten reduzieren das Endkapital (vereinfacht: direkt abziehen)
+  const bavKapital = bavKapitalBrutto - zillmerKosten;
   const etfKapital = etfSparrate * 12 * ((Math.pow(1 + etfRendite, jahre) - 1) / etfRendite);
 
   const bavEinzahlung = bavMonatl * 12 * jahre;
   const etfEinzahlung = etfSparrate * 12 * jahre;
 
-  // bAV im Rentenalter: Einkommensteuer auf gesamtes Kapital + KV
-  const kvSatz = 0.186;
+  // bAV im Rentenalter: KV 17,5% + PV 3,6% = 21,1% gesamt
+  // Freibetrag 197,75€/Monat = 2373€/Jahr gilt nur für KV, nicht PV
+  const kvSatz = 0.175; // KV: 14,6% + 2,9% Zusatzbeitrag, Rentner zahlt allein
+  const pvSatz = 0.036; // PV: Rentner zahlt allein
   const kvFreibetragJahr = 2373;
   const bavJahresrente = bavKapital * 0.04;
   const kvPflichtig = Math.max(0, bavJahresrente - kvFreibetragJahr) / bavJahresrente;
-  const bavAbzug = steuersatzRente + (kvSatz * kvPflichtig);
+  const pvPflichtig = 1.0; // PV hat keinen Freibetrag
+  const bavAbzug = steuersatzRente + (kvSatz * kvPflichtig) + (pvSatz * pvPflichtig);
   const bavNettoOhneGRV = bavKapital * (1 - bavAbzug);
 
   // GRV-Rentenkürzung: inflationsbereinigt auf heutigen Geldwert
@@ -937,8 +1020,7 @@ function berechnen() {
   document.getElementById('bilanz-rentensteuer').textContent = '−' + fmt(rentensteuer);
   document.getElementById('bilanz-kv').textContent = '−' + fmt(kvGesamt);
   document.getElementById('bilanz-grv').textContent = '~−' + fmt(grvReal);
-  document.getElementById('bilanz-grv-jahre').textContent = rentenbezugsdauer + ' Jahre (inflationsbereinigt)';
-  // Dritte Box: Kein Investment
+  document.getElementById('bilanz-grv-jahre').textContent = rentenbezugsdauer + ' Jahre (inflationsbereinigt)';  // Dritte Box: Kein Investment
   const inflation = 0.025;
   const nichtsSparrate = eigenNetto;
   const nichtsGespart = nichtsSparrate * 12 * jahre;
@@ -960,6 +1042,7 @@ function berechnen() {
   document.getElementById('nd-vs-etf').textContent = '−' + fmt(nichtsVsEtf);
 
   document.getElementById('wechsel-hinweis').style.display = jahre > 20 ? 'list-item' : 'none';
+  document.getElementById('wechsel-warnung').style.display = jahre > 20 ? 'block' : 'none';
 
   const results = document.getElementById('results');
   results.classList.add('visible');

@@ -22,21 +22,16 @@
   }
   html, body { overflow-x: hidden; max-width: 100%; }
   body { background: var(--bg); color: var(--ink); font-family: var(--sans); min-height: 100vh; line-height: 1.5; }
-
   nav { background: rgba(15,36,25,0.97); padding: 0.75rem 1.25rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; width: 100%; box-sizing: border-box; }
   .nav-logo { font-size: 1rem; font-weight: 700; color: white; text-decoration: none; letter-spacing: -0.02em; }
   .nav-logo span { color: #4ade80; }
   .nav-link { font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.7); text-decoration: none; padding: 0.4rem 0.85rem; border-radius: 100px; border: 1px solid rgba(255,255,255,0.15); }
-
   header { background: linear-gradient(135deg, #0f2419 0%, #1a4a30 60%, #1e5c3a 100%); color: white; padding: 2.5rem 1.5rem 2rem; }
   .header-inner { max-width: 760px; margin: 0 auto; }
   header h1 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
   header p { font-size: 0.9rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
-
   main { max-width: 760px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-
   .back-btn { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; font-weight: 600; color: var(--accent); text-decoration: none; margin-bottom: 1.5rem; padding: 0.5rem 1rem; background: var(--accent-bg); border: 1.5px solid var(--accent-border); border-radius: 100px; }
-
   .section { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 1.75rem; margin-bottom: 1.25rem; }
   .section-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
   .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
@@ -44,35 +39,28 @@
   .section p { font-size: 0.88rem; line-height: 1.8; color: var(--ink-muted); margin-bottom: 0.75rem; }
   .section p:last-child { margin-bottom: 0; }
   .section strong { color: var(--ink); }
-
   .highlight { background: var(--accent-bg); border: 1.5px solid var(--accent-border); border-radius: var(--radius-sm); padding: 1rem 1.25rem; margin: 0.75rem 0; font-size: 0.85rem; color: var(--accent); font-weight: 600; line-height: 1.6; }
   .warn-box { background: var(--warn-bg); border: 1.5px solid #f0b8b3; border-radius: var(--radius-sm); padding: 1rem 1.25rem; margin: 0.75rem 0; font-size: 0.85rem; color: var(--warn); line-height: 1.6; }
-
   .cta { background: var(--accent); border-radius: var(--radius); padding: 1.75rem; text-align: center; margin-bottom: 1.25rem; }
   .cta p { color: rgba(255,255,255,0.7); font-size: 0.85rem; margin-bottom: 1rem; }
   .cta a { display: inline-block; padding: 0.9rem 2rem; background: white; color: var(--accent); border-radius: var(--radius-sm); font-weight: 700; text-decoration: none; font-size: 0.95rem; }
-
   footer { background: #1a1a18; color: rgba(255,255,255,0.5); padding: 2rem 1.5rem; }
   .footer-inner { max-width: 760px; margin: 0 auto; font-size: 0.72rem; line-height: 1.7; }
 </style>
 </head>
 <body>
-
 <nav>
   <a href="index.html" class="nav-logo">Kapital<span>Plan</span></a>
   <a href="versicherungscheck.html" class="nav-link">← Zum Check</a>
 </nav>
-
 <header>
   <div class="header-inner">
     <h1>Welche Versicherungen brauche ich wirklich?</h1>
     <p>Ehrlicher Ratgeber ohne Verkaufsinteresse — alle wichtigen Versicherungsarten erklärt.</p>
   </div>
 </header>
-
 <main>
   <a href="versicherungscheck.html" class="back-btn">← Zum personalisierten Check</a>
-
   <div class="section">
     <div class="section-label">Grundregel</div>
     <h2>Was ist eine sinnvolle Versicherung?</h2>
@@ -80,14 +68,12 @@
     <div class="highlight">✓ Versichere große, unwahrscheinliche Risiken — nicht kleine, häufige Schäden.</div>
     <p>Viele Menschen sind über- und gleichzeitig unterversichert: zu viele unnötige Policen, aber keine Berufsunfähigkeitsversicherung.</p>
   </div>
-
   <div class="section">
     <div class="section-label">Fast immer nötig</div>
     <h2>Private Haftpflichtversicherung — die wichtigste Versicherung</h2>
     <p>Die Haftpflicht ist die einzige Versicherung die fast jeder braucht. Ein Moment der Unachtsamkeit — versehentlich jemanden verletzt, ein teures Gerät beschädigt — und du haftest mit deinem gesamten Vermögen, unbegrenzt.</p>
     <div class="highlight">💡 Kostet nur ~50–100 € pro Jahr und schützt vor unbegrenzter Haftung. Kein Haushalt sollte darauf verzichten.</div>
   </div>
-
   <div class="section">
     <div class="section-label">Situativ</div>
     <h2>Wann lohnt sich die Hausratversicherung?</h2>
@@ -95,7 +81,6 @@
     <div class="warn-box">⚠️ Unterversicherung ist häufig — achte auf die richtige Versicherungssumme (ca. 650 € pro m² Wohnfläche als Richtwert).</div>
     <p>Wer wenig eigene Sachen hat und risikofreudig ist, kann die Hausratversicherung hinterfragen.</p>
   </div>
-
   <div class="section">
     <div class="section-label">Sehr wichtig, oft unterschätzt</div>
     <h2>Wann ist die Berufsunfähigkeitsversicherung sinnvoll?</h2>
@@ -103,7 +88,6 @@
     <div class="highlight">✓ BU ist besonders wichtig für: Familien mit Kindern, Selbstständige, Berufseinsteiger (günstigere Prämien).</div>
     <div class="warn-box">⚠️ Ausnahme: Wer ein stabiles familiäres Auffangnetz hat und dieses auch annehmen würde, kann BU hinterfragen.</div>
   </div>
-
   <div class="section">
     <div class="section-label">Für Familien</div>
     <h2>Wann ist die Risikolebensversicherung sinnvoll?</h2>
@@ -111,7 +95,6 @@
     <p>Als Single ohne Abhängige brauchst du sie in der Regel nicht.</p>
     <div class="highlight">💡 Faustregel: Versicherungssumme = 3–5× dein Jahresbrutto. Läuft bis die Kinder selbstständig sind oder der Kredit abbezahlt ist.</div>
   </div>
-
   <div class="section">
     <div class="section-label">Kommt drauf an</div>
     <h2>Lohnt sich die Zahnzusatzversicherung?</h2>
@@ -119,14 +102,12 @@
     <p>Wichtig: Viele Versicherungen haben Wartezeiten von 3–8 Monaten und Erstattungsgrenzen in den ersten Jahren. Wer akuten Bedarf hat, ist oft zu spät dran.</p>
     <div class="warn-box">⚠️ Rechne nach: Jahresprämie × geplante Laufzeit vs. erwartete Erstattungen. Bei vielen lohnt es sich nicht.</div>
   </div>
-
   <div class="section">
     <div class="section-label">Oft überschätzt</div>
     <h2>Wann ist die Rechtsschutzversicherung sinnvoll?</h2>
     <p>Rechtsschutz lohnt sich vor allem wenn du <strong>bereits in Rechtsstreitigkeiten verwickelt warst</strong> oder konkrete Konfliktherde siehst (Mietrecht, Arbeitsrecht).</p>
     <p>Für konfliktscheue Menschen ohne besondere Risikofaktoren ist sie oft überteuert. Ein erstes Anwaltsgespräch kostet meist nur ~190 € — das ist günstiger als jahrelange Beiträge wenn man es selten nutzt.</p>
   </div>
-
   <div class="section">
     <div class="section-label">Fast nie sinnvoll</div>
     <h2>Versicherungen die du dir sparen kannst</h2>
@@ -135,12 +116,10 @@
     <p><strong>Reisegepäckversicherung, Brillenversicherung, Sterbegeldversicherung:</strong> Fast immer ein schlechtes Kosten-Nutzen-Verhältnis.</p>
     <div class="highlight">💡 Grundregel: Je kleiner und häufiger ein Schaden, desto weniger lohnt sich eine Versicherung dafür.</div>
   </div>
-
   <div class="cta">
     <p>Jetzt deinen persönlichen Check machen</p>
     <a href="versicherungscheck.html">→ Zum Versicherungscheck</a>
   </div>
-
   <div style="margin-bottom:1.25rem;">
     <div style="font-size:0.65rem; font-family:var(--mono); color:var(--ink-muted); text-align:right; margin-bottom:0.3rem; letter-spacing:0.05em;">ANZEIGE</div>
     <a href="https://a.partner-versicherung.de/click.php?partner_id=202298&ad_id=15&deep=rentenversicherung" target="_blank" style="display:block; width:100%; padding:1rem 1.5rem; background:#e67e22; color:white; border-radius:var(--radius-sm); font-family:var(--sans); font-size:0.95rem; font-weight:600; text-align:center; text-decoration:none; box-shadow:0 2px 8px rgba(230,126,34,0.3);">
@@ -148,20 +127,17 @@
     </a>
     <p style="font-size:0.7rem; color:var(--ink-muted); text-align:center; margin-top:0.5rem; font-family:var(--mono);">Kostenlos & unverbindlich · Powered by Tarifcheck</p>
   </div>
-
   <p style="font-size:0.7rem; color:var(--ink-muted); line-height:1.7; text-align:center; padding:1rem 0; border-top:1px solid var(--border);">
     Dieser Ratgeber dient zur Orientierung und ersetzt keine individuelle Versicherungsberatung. Alle Angaben ohne Gewähr. Stand: 2026.
   </p>
 </main>
-
 <footer>
   <div class="footer-inner">
     <strong style="color:white;">KapitalPlan</strong> · <a href="index.html" style="color:rgba(255,255,255,0.5); text-decoration:none;">Alle Rechner</a><br><br>
-    Robert Meyer · Paulinenallee 51 · 22769 Hamburg · rpmax.meyer@ewetel.net · +49 157 87294785<br>
+    Robert Meyer · Paulinenallee 15 · 22769 Hamburg · rpmax.meyer@ewetel.net · +49 157 87294785<br>
     Diese Website stellt keine Versicherungsberatung dar. Alle Angaben ohne Gewähr. Stand: 2026.<br>
     © 2026 KapitalPlan
   </div>
 </footer>
-
 </body>
 </html>

@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welche Versicherungen brauche ich wirklich? | KapitalPlan</title>
+<meta name="description" content="Personalisierter Versicherungscheck mit Risikoanalyse — welche Versicherungen brauchst du wirklich? Haftpflicht, Hausrat, BU, Zahnzusatz, Rechtsschutz ehrlich bewertet. Kostenlos & unabhängig.">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231a4a30'/><text x='16' y='23' font-family='Arial Black,sans-serif' font-size='20' font-weight='900' fill='%234ade80' text-anchor='middle'>K</text></svg>">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f0f2f5; --surface: #ffffff; --surface2: #f8f9fb;
+    --ink: #0f1117; --ink-muted: #6e7585;
+    --accent: #1a6b4a; --accent-bg: #edf7f2; --accent-border: #a8ddc3;
+    --warn: #c0392b; --warn-bg: #fdf2f1; --warn-border: #f0b8b3;
+    --orange: #e67e22; --orange-bg: #fef5ec; --orange-border: #f5c89a;
+    --border: #e4e7ed;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    --radius: 16px; --radius-sm: 10px;
+    --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  html, body { overflow-x: hidden; max-width: 100%; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); min-height: 100vh; line-height: 1.5; }
+
+  .nav { background: rgba(15,36,25,0.97); padding: 0.75rem 1.25rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; width: 100%; box-sizing: border-box; }
+  .nav-logo { font-size: 1rem; font-weight: 700; color: white; text-decoration: none; letter-spacing: -0.02em; }
+  .nav-logo span { color: #4ade80; }
+  .nav-link { font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.7); text-decoration: none; padding: 0.4rem 0.85rem; border-radius: 100px; border: 1px solid rgba(255,255,255,0.15); }
+
+  header { background: linear-gradient(135deg, #0f2419 0%, #1a4a30 60%, #1e5c3a 100%); color: white; padding: 3rem 2rem 2.5rem; position: relative; overflow: hidden; }
+  header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 50%, rgba(40,180,100,0.12) 0%, transparent 60%); pointer-events: none; }
+  .header-inner { max-width: 860px; margin: 0 auto; position: relative; }
+  .header-pill { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 100px; padding: 0.3rem 0.85rem; font-size: 0.72rem; font-weight: 500; color: rgba(255,255,255,0.75); margin-bottom: 1.25rem; letter-spacing: 0.04em; }
+  .header-pill::before { content: ''; width: 6px; height: 6px; background: #4ade80; border-radius: 50%; display: inline-block; }
+  header h1 { font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+  header h1 span { color: #4ade80; }
+  .header-sub { font-size: 1rem; color: rgba(255,255,255,0.6); max-width: 520px; line-height: 1.6; }
+
+  main { max-width: 760px; margin: 0 auto; padding: 2rem 1.25rem 4rem; width: 100%; box-sizing: border-box; }
+
+  /* PROGRESS */
+  .progress-bar { background: var(--border); border-radius: 100px; height: 4px; margin-bottom: 2rem; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 100px; transition: width 0.4s ease; }
+  .progress-label { font-size: 0.72rem; color: var(--ink-muted); font-family: var(--mono); margin-bottom: 0.5rem; }
+
+  /* STEP CARD */
+  .step { display: none; }
+  .step.active { display: block; animation: fadeUp 0.35s ease; }
+
+  .step-card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 2rem; margin-bottom: 1rem; }
+  .step-number { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; font-family: var(--mono); }
+  .step-question { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.4; margin-bottom: 0.5rem; }
+  .step-hint { font-size: 0.82rem; color: var(--ink-muted); line-height: 1.6; margin-bottom: 1.5rem; }
+
+  /* OPTIONS */
+  .options { display: flex; flex-direction: column; gap: 0.75rem; }
+  .option-btn {
+    background: var(--surface2); border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+    padding: 1rem 1.25rem; cursor: pointer; text-align: left; font-family: var(--sans);
+    font-size: 0.92rem; font-weight: 500; color: var(--ink); transition: all 0.15s;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .option-btn:hover { border-color: var(--accent); background: var(--accent-bg); }
+  .option-btn.selected { border-color: var(--accent); background: var(--accent-bg); color: var(--accent); font-weight: 600; }
+  .option-btn .option-icon { font-size: 1.2rem; flex-shrink: 0; }
+  .option-btn .option-text { flex: 1; }
+  .option-btn .option-sub { font-size: 0.75rem; color: var(--ink-muted); font-weight: 400; margin-top: 0.2rem; display: block; }
+  .option-btn.selected .option-sub { color: var(--accent); opacity: 0.8; }
+
+  /* NAV BUTTONS */
+  .step-nav { display: flex; gap: 0.75rem; margin-top: 1rem; }
+  .btn-next { flex: 1; padding: 0.9rem; background: var(--accent); color: white; border: none; border-radius: var(--radius-sm); font-family: var(--sans); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.15s; box-shadow: 0 2px 8px rgba(26,107,74,0.25); }
+  .btn-next:hover { background: #155c3e; }
+  .btn-next:disabled { background: var(--border); color: var(--ink-muted); box-shadow: none; cursor: not-allowed; }
+  .btn-back { padding: 0.9rem 1.25rem; background: var(--surface2); color: var(--ink-muted); border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: var(--sans); font-size: 0.95rem; font-weight: 600; cursor: pointer; }
+
+  /* RESULTS */
+  .result-header { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 1.75rem; margin-bottom: 1.25rem; }
+  .profil-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.4rem 1rem; border-radius: 100px; font-size: 0.78rem; font-weight: 700; margin-bottom: 1rem; }
+  .profil-badge.avers { background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent-border); }
+  .profil-badge.neutral { background: #f0f4ff; color: #3b5bdb; border: 1px solid #bac8ff; }
+  .profil-badge.freudig { background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange-border); }
+  .result-headline { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+  .result-sub { font-size: 0.88rem; color: var(--ink-muted); line-height: 1.7; }
+
+  .versicherung-card { background: var(--surface); border-radius: var(--radius); border: 1.5px solid var(--border); box-shadow: var(--shadow); padding: 1.5rem; margin-bottom: 1rem; overflow: hidden; }
+  .versicherung-card.empfohlen { border-color: var(--accent); }
+  .versicherung-card.eher-empfohlen { border-color: #4dabf7; }
+  .versicherung-card.eher-nicht { border-color: #f0b84d; }
+  .versicherung-card.nicht-empfohlen { border-color: var(--border); opacity: 0.7; }
+  
+  
+
+  .versicherung-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+  .versicherung-icon { font-size: 1.4rem; }
+  .versicherung-name { font-size: 1rem; font-weight: 700; letter-spacing: -0.01em; flex: 1; }
+  .versicherung-tag { font-size: 0.65rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 100px; letter-spacing: 0.04em; white-space: nowrap; }
+  .tag-empfohlen { background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent-border); }
+  .tag-eher-empfohlen { background: #e7f5ff; color: #1971c2; border: 1px solid #74c0fc; }
+  .tag-eher-nicht { background: #fffbf0; color: #8a6200; border: 1px solid #f0b84d; }
+  .tag-nicht { background: var(--surface2); color: var(--ink-muted); border: 1px solid var(--border); }
+  .tag-nicht { background: var(--surface2); color: var(--ink-muted); border: 1px solid var(--border); }
+
+  .versicherung-begruendung { font-size: 0.83rem; color: var(--ink-muted); line-height: 1.7; margin-bottom: 0.75rem; }
+  .versicherung-kosten { font-size: 0.78rem; font-family: var(--mono); color: var(--ink-muted); padding: 0.5rem 0.75rem; background: var(--surface2); border-radius: 6px; display: inline-block; }
+
+  .section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); margin: 1.5rem 0 1rem; display: flex; align-items: center; gap: 0.75rem; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .disclaimer { font-size: 0.7rem; color: var(--ink-muted); line-height: 1.7; text-align: center; padding: 1.25rem 0 0; border-top: 1px solid var(--border); margin-top: 1.5rem; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  footer { background: #1a1a18; color: rgba(255,255,255,0.5); padding: 2rem 1.5rem; margin-top: 2rem; }
+  .footer-inner { max-width: 760px; margin: 0 auto; font-size: 0.72rem; line-height: 1.7; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Kapital<span>Plan</span></a>
+  <a href="index.html" class="nav-link">← Alle Rechner</a>
+  <a href="versicherungs-info.html" style="font-size:0.78rem; font-weight:600; color:rgba(255,255,255,0.7); text-decoration:none; padding:0.4rem 0.85rem; border-radius:100px; border:1px solid rgba(255,255,255,0.15);">Ratgeber</a>
+</nav>
+
+<header>
+  <div class="header-inner">
+    <div class="header-pill">Unabhängig · Keine Produktempfehlung · Kostenlos</div>
+    <h1>Welche Versicherungen<br>brauchst du <span>wirklich</span>?</h1>
+    <p class="header-sub">Personalisierter Versicherungscheck mit Risikoanalyse — ehrliche Einschätzung ohne Verkaufsinteresse.</p>
+  </div>
+</header>
+
+<main>
+  <div class="progress-label" id="progress-label">Frage 1 von 8</div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:12.5%"></div></div>
+
+  <!-- SCHRITT 1: Risiko Frage 1 -->
+  <div class="step active" id="step-1">
+    <div class="step-card">
+      <div class="step-number">Risikoanalyse · Frage 1 von 3</div>
+      <div class="step-question">Du kannst wählen — was nimmst du?</div>
+      <div class="step-hint">Es gibt keine richtige oder falsche Antwort. Wir wollen nur verstehen wie du mit Unsicherheit umgehst.</div>
+      <div class="options">
+        <button class="option-btn" onclick="select(1, 'sicher_40', this)" id="s1-a">
+          <span class="option-icon">💵</span>
+          <span class="option-text">40 € sicher bekommen<span class="option-sub">Kein Risiko, kleiner aber garantierter Betrag</span></span>
+        </button>
+        <button class="option-btn" onclick="select(1, 'muenze', this)" id="s1-b">
+          <span class="option-icon">🪙</span>
+          <span class="option-text">Münze werfen — Kopf: 100 €, Zahl: nichts<span class="option-sub">50 % Chance auf 100 €, 50 % Chance auf 0 €</span></span>
+        </button>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button class="btn-next" id="next-1" onclick="nextStep(1)" disabled>Weiter →</button>
+    </div>
+  </div>
+
+  <!-- SCHRITT 2: Risiko Frage 2 (Handy-Ärger) -->
+  <div class="step" id="step-2">
+    <div class="step-card">
+      <div class="step-number">Risikoanalyse · Frage 2 von 2</div>
+      <div class="step-question">Dein Handy fällt runter und geht kaputt (ca. 800 €). Wie lange ärgerst du dich?</div>
+      <div class="step-hint">Stell dir vor es passiert heute — wie ist deine ehrliche Reaktion?</div>
+      <div class="options">
+        <button class="option-btn" onclick="select(2, 'kurz', this)" id="s2-a">
+          <span class="option-icon">😌</span>
+          <span class="option-text">Kurzen Moment — sowas passiert mal<span class="option-sub">Ärgerlich aber ich hake es schnell ab</span></span>
+        </button>
+        <button class="option-btn" onclick="select(2, 'tag', this)" id="s2-b">
+          <span class="option-icon">😤</span>
+          <span class="option-text">Einen Tag — ärgert mich schon ordentlich<span class="option-sub">Ich denke noch eine Weile daran</span></span>
+        </button>
+        <button class="option-btn" onclick="select(2, 'woche', this)" id="s2-c">
+          <span class="option-icon">😣</span>
+          <span class="option-text">Eine Woche — das würde mich wirklich belasten<span class="option-sub">Solche Verluste beschäftigen mich lange</span></span>
+        </button>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button class="btn-back" onclick="prevStep(2)">← Zurück</button>
+      <button class="btn-next" id="next-2" onclick="nextStep(2)" disabled>Weiter →</button>
+    </div>
+  </div>
+
+  <!-- SCHRITT 4: Lebenssituation -->
+  <div class="step" id="step-3">
+    <div class="step-card">
+      <div class="step-number">Deine Situation · Frage 1 von 4</div>
+      <div class="step-question">Wie wohnst du?</div>
+      <div class="options">
+        <button class="option-btn" onclick="select(3, 'miete_wenig', this)" id="s4-a">
+          <span class="option-icon">🏠</span>
+          <span class="option-text">Zur Miete — wenig eigene Sachen<span class="option-sub">Möbel, Kleidung, Laptop — nichts Besonderes</span></span>
+        </button>
+        <button class="option-btn" onclick="select(3, 'miete_viel', this)" id="s4-b">
+          <span class="option-icon">🏡</span>
+          <span class="option-text">Zur Miete — mit wertvollen Sachen<span class="option-sub">Teures Equipment, Schmuck, hochwertige Möbel</span></span>
+        </button>
+        <button class="option-btn" onclick="select(3, 'eigentum', this)" id="s4-c">
+          <span class="option-icon">🏘️</span>
+          <span class="option-text">Eigentümer (Haus oder Wohnung)<span class="option-sub">Eigentumswohnung oder Haus</span></span>
+        </button>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button class="btn-back" onclick="prevStep(3)">← Zurück</button>
+      <button class="btn-next" id="next-3" onclick="nextStep(3)" disabled>Weiter →</button>
+    </div>
+  </div>
+
+  <!-- SCHRITT 5: Familie -->
+  <div class="step" id="step-4">
+    <div class="step-card">
+      <div class="step-number">Deine Situation · Frage 2 von 4</div>
+      <div class="step-question">Wie ist deine familiäre Situation?</div>
+      <div class="options">
+        <button class="option-btn" onclick="select(4, 'single', this)" id="s5-a">
+          <span class="option-icon">👤</span>
+          <span class="option-text">Single — keine Abhängigen<span class="option-sub">Niemand ist finanziell auf mich angewiesen</span></span>
+        </button>
+        <button class="option-btn" onclick="select(4, 'partner', this)" id="s5-b">
+          <span class="option-icon">👫</span>
+          <span class="option-text">Partner — aber keine Kinder<span class="option-sub">Mit Partner zusammen, beide berufstätig</span></span>
+        </button>
+        <button class="option-btn" onclick="select(4, 'familie', this)" id="s5-c">
+          <span class="option-icon">👨‍👩‍👧</span>
+          <span class="option-text">Familie mit Kindern<span class="option-sub">Kinder oder andere Personen abhängig von meinem Einkommen</span></span>
+        </button>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button class="btn-back" onclick="prevStep(4)">← Zurück</button>
+      <button class="btn-next" id="next-4" onclick="nextStep(4)" disabled>Weiter →</button>
+    </div>
+  </div>
+
+  <!-- SCHRITT 6: Beruf -->
+  <div class="step" id="step-5">
+    <div class="step-card">
+      <div class="step-number">Deine Situation · Frage 1 von 4</div>
+      <div class="step-question">Was machst du beruflich?</div>
+      <div class="options">
+        <button class="option-btn" onclick="select(5, 'angestellt', this)" id="s6-a">
+          <span class="option-icon">💼</span>
+          <span class="option-text">Angestellt<span class="option-sub">Fester Arbeitgeber, regelmäßiges Gehalt</span></span>
+        </button>
+        <button class="option-btn" onclick="select(5, 'beamter', this)" id="s6-b">
+          <span class="option-icon">🏛️</span>
+          <span class="option-text">Beamter / Beamtin<span class="option-sub">Staatlicher Dienst mit Dienstunfähigkeitsschutz</span></span>
+        </button>
+        <button class="option-btn" onclick="select(5, 'selbststaendig', this)" id="s6-c">
+          <span class="option-icon">🚀</span>
+          <span class="option-text">Selbstständig / Freiberufler<span class="option-sub">Kein Arbeitgeber, kein Krankengeld</span></span>
+        </button>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button class="btn-back" onclick="prevStep(5)">← Zurück</button>
+      <button class="btn-next" id="next-5" onclick="nextStep(5)" disabled>Weiter →</button>
+    </div>
+  </div>
+
+  <!-- SCHRITT 7: BU-spezifisch -->
+  <div class="step" id="step-6">
+    <div class="step-card">
+      <div class="step-number">Deine Situation · Frage 4 von 4</div>
+      <div class="step-question">Falls du nicht mehr arbeiten könntest — hast du ein Auffangnetz?</div>
+      <div class="step-hint">Gemeint ist: Würde dir jemand dauerhaft finanziell helfen wenn du berufsunfähig wärst?</div>
+      <div class="options">
+        <button class="option-btn" onclick="select(6, 'netz_ja', this)" id="s7-a">
+          <span class="option-icon">🤝</span>
+          <span class="option-text">Ja — Familie würde mich unterstützen<span class="option-sub">Und ich würde diese Hilfe auch annehmen</span></span>
+        </button>
+        <button class="option-btn" onclick="select(6, 'netz_nein', this)" id="s7-b">
+          <span class="option-icon">🙅</span>
+          <span class="option-text">Nein — ich bin auf mein Einkommen angewiesen<span class="option-sub">Kein Auffangnetz vorhanden oder ich würde es nicht annehmen</span></span>
+        </button>
+        <button class="option-btn" onclick="select(6, 'netz_vermoegen', this)" id="s7-c">
+          <span class="option-icon">💰</span>
+          <span class="option-text">Ich habe genug Vermögen um mich selbst abzusichern<span class="option-sub">Ersparnisse/Investments würden reichen</span></span>
+        </button>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button class="btn-back" onclick="prevStep(6)">← Zurück</button>
+      <button class="btn-next" id="next-6" onclick="nextStep(6)" disabled>Weiter →</button>
+    </div>
+  </div>
+
+  <!-- SCHRITT 8: Zähne -->
+  <div class="step" id="step-7">
+    <div class="step-card">
+      <div class="step-number">Spezifische Fragen · Frage 1 von 2</div>
+      <div class="step-question">Wie würdest du deinen Zahnzustand einschätzen?</div>
+      <div class="step-hint">Ehrlich — niemand sieht deine Antwort. Je genauer, desto besser die Empfehlung.</div>
+      <div class="options">
+        <button class="option-btn" onclick="select(7, 'zahn_gut', this)" id="s8-a">
+          <span class="option-icon">😁</span>
+          <span class="option-text">Gut — selten beim Zahnarzt, kaum Behandlungen<span class="option-sub">Normale Kontrolltermine reichen aus</span></span>
+        </button>
+        <button class="option-btn" onclick="select(7, 'zahn_mittel', this)" id="s8-b">
+          <span class="option-icon">😐</span>
+          <span class="option-text">Mittel — ab und zu etwas, normale Behandlungen<span class="option-sub">Füllungen, kleinere Eingriffe schon mal gehabt</span></span>
+        </button>
+        <button class="option-btn" onclick="select(7, 'zahn_schlecht', this)" id="s8-c">
+          <span class="option-icon">😬</span>
+          <span class="option-text">Eher schlecht — Zahnersatz ist absehbar<span class="option-sub">Kronen, Implantate oder ähnliches wahrscheinlich</span></span>
+        </button>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button class="btn-back" onclick="prevStep(7)">← Zurück</button>
+      <button class="btn-next" id="next-7" onclick="nextStep(7)" disabled>Weiter →</button>
+    </div>
+  </div>
+
+  <!-- SCHRITT 9: Rechtsstreit -->
+  <div class="step" id="step-8">
+    <div class="step-card">
+      <div class="step-number">Spezifische Fragen · Frage 2 von 2</div>
+      <div class="step-question">Warst du schon mal in einen Rechtsstreit verwickelt — oder erwartest du das?</div>
+      <div class="step-hint">Mietstreit, Arbeitgeber, Nachbarn, Verkehrsunfall — alles zählt.</div>
+      <div class="options">
+        <button class="option-btn" onclick="select(8, 'recht_nein', this)" id="s9-a">
+          <span class="option-icon">🕊️</span>
+          <span class="option-text">Nein — ich bin eher konfliktscheu<span class="option-sub">Ich meide Konflikte und löse sie lieber direkt</span></span>
+        </button>
+        <button class="option-btn" onclick="select(8, 'recht_moeglich', this)" id="s9-b">
+          <span class="option-icon">🤔</span>
+          <span class="option-text">Möglich — Mietstreit, Arbeitgeber oder Nachbarn denkbar<span class="option-sub">Ich sehe potenzielle Konfliktherde in meiner Situation</span></span>
+        </button>
+        <button class="option-btn" onclick="select(8, 'recht_ja', this)" id="s9-c">
+          <span class="option-icon">⚖️</span>
+          <span class="option-text">Ja — ich war schon mal in Rechtsstreitigkeiten<span class="option-sub">Oder ich rechne damit in Zukunft</span></span>
+        </button>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button class="btn-back" onclick="prevStep(8)">← Zurück</button>
+      <button class="btn-next" id="next-8" onclick="auswerten()" disabled>Auswertung anzeigen →</button>
+    </div>
+  </div>
+
+  <!-- ERGEBNIS -->
+  <div class="step" id="step-9">
+
+    <div class="result-header">
+      <div class="profil-badge" id="profil-badge">🧠 Risikoprofil</div>
+      <div class="result-headline" id="result-headline">Deine persönliche Einschätzung</div>
+      <div class="result-sub" id="result-sub">—</div>
+    </div>
+
+    <div class="section-label">✅ Empfohlen für dich</div>
+    <div id="empfohlen-container"></div>
+
+    <div class="section-label" id="eher-empfohlen-label" style="display:none">🔵 Eher empfohlen</div>
+    <div id="eher-empfohlen-container"></div>
+
+    <div class="section-label" id="eher-nicht-label" style="display:none">🟡 Eher nicht empfohlen</div>
+    <div id="eher-nicht-container"></div>
+
+    <div class="section-label" id="nicht-label" style="display:none">❌ Nicht empfohlen</div>
+    <div id="nicht-container"></div>
+
+    <div style="margin-top:1.5rem;">
+      <div style="font-size:0.65rem; font-family:var(--mono); color:var(--ink-muted); text-align:right; margin-bottom:0.3rem; letter-spacing:0.05em;">ANZEIGE</div>
+      <a href="https://a.partner-versicherung.de/click.php?partner_id=202298&ad_id=15&deep=rentenversicherung" target="_blank" style="display:block; width:100%; padding:1rem 1.5rem; background:var(--orange); color:white; border-radius:var(--radius-sm); font-family:var(--sans); font-size:0.95rem; font-weight:600; text-align:center; text-decoration:none; box-shadow:0 2px 8px rgba(230,126,34,0.3);">
+        Versicherungen kostenlos vergleichen →
+      </a>
+      <p style="font-size:0.7rem; color:var(--ink-muted); text-align:center; margin-top:0.5rem; font-family:var(--mono);">Kostenlos & unverbindlich · Powered by Tarifcheck</p>
+    </div>
+
+    <p class="disclaimer">
+      <strong>Wichtiger Hinweis:</strong> Diese Einschätzung ist eine vereinfachte Orientierungshilfe und ersetzt keine individuelle Versicherungsberatung. Für eine verbindliche Empfehlung wende dich an einen unabhängigen Versicherungsberater. Stand: 2026.
+    </p>
+
+    <div style="text-align:center; margin-top:1.5rem;">
+      <button onclick="neustart()" style="background:none; border:1.5px solid var(--border); border-radius:100px; padding:0.6rem 1.25rem; font-family:var(--sans); font-size:0.85rem; font-weight:600; color:var(--ink-muted); cursor:pointer;">↺ Neu starten</button>
+    </div>
+
+  </div><!-- end step-10 -->
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <strong style="color:white;">KapitalPlan</strong> · <a href="index.html" style="color:rgba(255,255,255,0.5); text-decoration:none;">Alle Rechner</a><br><br>
+    Robert Meyer · Paulinenallee 15 · 22769 Hamburg · rpmax.meyer@ewetel.net · +49 157 87294785<br>
+    Diese Website stellt keine Finanz- oder Versicherungsberatung dar. Alle Angaben ohne Gewähr. Stand: 2026.<br>
+    © 2026 KapitalPlan
+  </div>
+</footer>
+
+<script>
+const answers = {};
+const totalSteps = 9;
+
+function select(step, value, el) {
+  answers[step] = value;
+  document.querySelectorAll(`#step-${step} .option-btn`).forEach(btn => btn.classList.remove('selected'));
+  el.classList.add('selected');
+  const nextBtn = document.getElementById(`next-${step}`);
+  if (nextBtn) nextBtn.disabled = false;
+}
+
+function nextStep(current) {
+  if (!answers[current]) return;
+  document.getElementById(`step-${current}`).classList.remove('active');
+  document.getElementById(`step-${current + 1}`).classList.add('active');
+  updateProgress(current + 1);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function prevStep(current) {
+  document.getElementById(`step-${current}`).classList.remove('active');
+  document.getElementById(`step-${current - 1}`).classList.add('active');
+  updateProgress(current - 1);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress(step) {
+  const pct = (step / totalSteps) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = step < totalSteps ? `Frage ${step} von ${totalSteps - 1}` : 'Deine Auswertung';
+}
+
+// Risikoprofil berechnen
+function getRisikoProfil() {
+  let score = 0;
+  // Frage 1: 40€ sicher = +2 Punkte (stark avers), Münze = 0
+  if (answers[1] === 'sicher_40') score += 2;
+  // Frage 2 (jetzt Handy-Ärger)
+  if (answers[2] === 'woche') score += 2;
+  else if (answers[2] === 'tag') score += 1;
+
+  if (score >= 3) return 'avers';
+  if (score >= 1) return 'neutral';
+  return 'freudig';
+}
+
+function auswerten() {
+  document.getElementById('step-8').classList.remove('active');
+  document.getElementById('step-9').classList.add('active');
+  updateProgress(9);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  const profil = getRisikoProfil();
+  const wohnen = answers[3];
+  const familie = answers[4];
+  const beruf = answers[5];
+  const netz = answers[6];
+  const zahn = answers[7];
+  const recht = answers[8];
+
+  // Profil-Badge
+  const badge = document.getElementById('profil-badge');
+  const headline = document.getElementById('result-headline');
+  const sub = document.getElementById('result-sub');
+
+  if (profil === 'avers') {
+    badge.className = 'profil-badge avers';
+    badge.textContent = '🛡️ Risikoprofil: Sicherheitsorientiert';
+    headline.textContent = 'Du schätzt Absicherung — das ist völlig rational.';
+    sub.textContent = 'Du bevorzugst Sicherheit gegenüber Chancen und ärgerst dich länger über Verluste. Für dich sind mehr Versicherungen sinnvoll — aber auch du solltest unnötige Verträge meiden.';
+  } else if (profil === 'neutral') {
+    badge.className = 'profil-badge neutral';
+    badge.textContent = '⚖️ Risikoprofil: Ausgewogen';
+    headline.textContent = 'Du gehst bewusst mit Risiken um.';
+    sub.textContent = 'Du wägst ab und nimmst kalkulierte Risiken. Wichtige Versicherungen ja — aber du brauchst nicht alles abzusichern.';
+  } else {
+    badge.className = 'profil-badge freudig';
+    badge.textContent = '🎲 Risikoprofil: Risikofreudig';
+    headline.textContent = 'Du trägst Risiken bewusst selbst.';
+    sub.textContent = 'Du akzeptierst Unsicherheit und ärgerst dich nicht lange über Verluste. Du brauchst weniger Versicherungen als der Durchschnitt — konzentriere dich auf die wirklich wichtigen.';
+  }
+
+  // Versicherungen bewerten
+  const versicherungen = [];
+
+  // 1. HAFTPFLICHT — fast immer
+  versicherungen.push({
+    icon: '🤝',
+    name: 'Private Haftpflichtversicherung',
+    status: 'empfohlen',
+    begruendung: 'Die wichtigste Versicherung überhaupt — und die günstigste. Ein Moment der Unachtsamkeit kann zu Schadensersatzforderungen in Millionenhöhe führen. Ohne Haftpflicht riskierst du dein gesamtes Vermögen. Kosten: ~50-100 € pro Jahr.',
+    kosten: '~50–100 € / Jahr'
+  });
+
+  // 2. HAUSRAT
+  let hausratStatus, hausratText;
+  if (wohnen === 'miete_wenig' && profil === 'freudig') {
+    hausratStatus = 'nicht-empfohlen';
+    hausratText = 'Bei wenigen eigenen Sachen und risikofreudigem Profil ist Hausrat oft überteuert im Verhältnis zum Schadenspotenzial. Addiere den Wert deiner Sachen — lohnt sich eine Versicherung?';
+  } else if (wohnen === 'miete_wenig') {
+    hausratStatus = 'eher-empfohlen';
+    hausratText = 'Mit wenigen eigenen Sachen hängt es davon ab wie viel dein Hab und Gut wirklich wert ist. Addiere alles zusammen — wenn es unter 10.000 € liegt, ist die Frage ob sich eine Versicherung lohnt.';
+  } else {
+    hausratStatus = 'empfohlen';
+    hausratText = 'Mit wertvollen Sachen oder Eigentum ist Hausrat sinnvoll. Achte auf die Versicherungssumme — Unterversicherung ist ein häufiges Problem.';
+  }
+  versicherungen.push({ icon: '🏠', name: 'Hausratversicherung', status: hausratStatus, begruendung: hausratText, kosten: '~80–200 € / Jahr' });
+
+  // 3. BERUFSUNFÄHIGKEIT
+  let buStatus, buText;
+  if (netz === 'netz_ja') {
+    buStatus = 'eher-empfohlen';
+    buText = 'Du hast ein familiäres Auffangnetz und würdest es annehmen — das reduziert die Dringlichkeit. Trotzdem: Bedenke dass du langfristig auf fremde Hilfe angewiesen wärst. Für viele ist das emotional schwierig.';
+  } else if (netz === 'netz_vermoegen') {
+    buStatus = 'nicht-empfohlen';
+    buText = 'Wenn dein Vermögen ausreicht um im Ernstfall davon zu leben, ist BU weniger dringend. Prüfe ob dein Vermögen wirklich für Jahrzehnte reicht.';
+  } else if (beruf === 'beamter') {
+    buStatus = 'eher-empfohlen';
+    buText = 'Als Beamter hast du Dienstunfähigkeitsschutz vom Staat — aber dieser greift erst nach langer Dienstzeit vollständig. In den ersten Jahren besteht eine Lücke.';
+  } else if (beruf === 'selbststaendig') {
+    buStatus = 'empfohlen';
+    buText = 'Als Selbstständiger hast du kein Krankengeld und keinen Arbeitgeberschutz — Berufsunfähigkeit wäre existenzbedrohend. BU ist für dich besonders wichtig.';
+  } else if (familie === 'familie') {
+    buStatus = 'empfohlen';
+    buText = 'Mit Kindern oder abhängigen Personen ist BU besonders wichtig — dein Ausfall würde die ganze Familie treffen. Eine der wichtigsten Versicherungen für Eltern.';
+  } else {
+    buStatus = profil === 'avers' ? 'empfohlen' : 'eher-empfohlen';
+    buText = 'Berufsunfähigkeit ist eine der am häufigsten unterschätzten Risiken — jeder 4. Arbeitnehmer wird vor der Rente berufsunfähig. Die Frage ist nicht ob, sondern wann du sie brauchst.';
+  }
+  versicherungen.push({ icon: '🏥', name: 'Berufsunfähigkeitsversicherung', status: buStatus, begruendung: buText, kosten: '~80–200 € / Monat' });
+
+  // ZAHNZUSATZ
+  let zahnStatus, zahnText;
+  if (zahn === 'zahn_schlecht') {
+    zahnStatus = 'eher-empfohlen';
+    zahnText = 'Mit absehbarem Zahnersatz kann sich Zahnzusatz lohnen — aber rechne genau nach: Jahresprämie × Laufzeit vs. erwartete Erstattungen. Achte auf Wartezeiten. Wenn du dich mit einer Versicherung sicherer fühlst, kann das allein schon ein Grund sein sie abzuschließen.';
+  } else if (zahn === 'zahn_mittel') {
+    zahnStatus = 'eher-nicht';
+    zahnText = 'Bei mittlerem Zahnzustand zahlen die meisten mehr ein als sie bekommen. Statistisch lohnt es sich kaum — aber wenn du dich mit einer Zahnzusatzversicherung wohler fühlst und der Beitrag für dich erschwinglich ist, spricht nichts dagegen.';
+  } else {
+    zahnStatus = 'nicht-empfohlen';
+    zahnText = 'Mit gutem Zahnzustand zahlst du statistisch deutlich mehr ein als du bekommst. Besser das Geld selbst zur Seite legen. Wenn du trotzdem das Gefühl hast eine Versicherung zu brauchen — das ist ein persönlicher Wert und völlig legitim.';
+  }
+  versicherungen.push({ icon: '🦷', name: 'Zahnzusatzversicherung', status: zahnStatus, begruendung: zahnText, kosten: '~10–50 € / Monat' });
+
+  // RECHTSSCHUTZ
+  let rsStatus, rsText;
+  if (recht === 'recht_ja') {
+    rsStatus = 'eher-empfohlen';
+    rsText = 'Du warst bereits in Rechtsstreitigkeiten — das ist ein klares Signal dass Rechtsschutz für dich sinnvoll sein kann. Prüfe welche Bereiche abgedeckt sind (Arbeitsrecht, Mietrecht etc.) und achte auf Wartezeiten. Wenn du dich mit Rechtsschutz sicherer fühlst, ist das allein schon ein valider Grund.';
+  } else if (recht === 'recht_moeglich' || wohnen === 'eigentum' || beruf === 'selbststaendig') {
+    rsStatus = 'eher-nicht';
+    rsText = 'Du siehst potenzielle Konfliktherde — das ist nachvollziehbar. Statistisch nutzen die meisten ihren Rechtsschutz selten. Wenn du dich damit aber wohler fühlst und die Prämie für dich passt, spricht nichts dagegen.';
+  } else {
+    rsStatus = 'nicht-empfohlen';
+    rsText = 'Bei konfliktscheuem Verhalten und unkomplizierter Lebenssituation lohnt sich Rechtsschutz rechnerisch kaum. Ein erstes Anwaltsgespräch kostet meist ~190 € — das ist oft günstiger als jahrelange Beiträge. Wenn du trotzdem das Gefühl hast es zu brauchen, ist das eine persönliche Entscheidung die wir respektieren.';
+  }
+  versicherungen.push({ icon: '⚖️', name: 'Rechtsschutzversicherung', status: rsStatus, begruendung: rsText, kosten: '~150–400 € / Jahr' });
+
+  // RISIKOLEBENSVERSICHERUNG
+  let risikoStatus, risikoText;
+  if (familie === 'familie') {
+    risikoStatus = 'empfohlen';
+    risikoText = 'Mit Kindern oder abhängigen Personen ist eine Risikolebensversicherung eine der wichtigsten Absicherungen überhaupt. Fällt dein Einkommen durch Tod weg, schützt sie deine Familie vor finanzieller Not. Faustregel: Versicherungssumme = 3–5× dein Jahresbrutto.';
+  } else if (familie === 'partner' && wohnen === 'eigentum') {
+    risikoStatus = 'eher-empfohlen';
+    risikoText = 'Als Paar mit Immobilie ist Risikoleben sinnvoll — falls einer ausfällt muss der andere den Kredit alleine stemmen. Eine gegenseitige Absicherung ist hier oft klug.';
+  } else if (familie === 'partner') {
+    risikoStatus = 'eher-nicht';
+    risikoText = 'Für Paare ohne Kinder und ohne große Kredite ist Risikoleben nur eingeschränkt sinnvoll — besonders wenn beide berufstätig sind und sich selbst absichern können.';
+  } else {
+    risikoStatus = 'nicht-empfohlen';
+    risikoText = 'Als Single ohne Abhängige brauchst du keine Risikolebensversicherung — niemand ist finanziell auf dein Einkommen angewiesen. Das Geld ist besser in ETF oder Altersvorsorge investiert.';
+  }
+  versicherungen.push({ icon: '💚', name: 'Risikolebensversicherung', status: risikoStatus, begruendung: risikoText, kosten: '~10–50 € / Monat' });
+
+  // UNFALLVERSICHERUNG
+  let unfallStatus, unfallText;
+  if (familie === 'familie' && netz === 'netz_nein') {
+    unfallStatus = 'eher-nicht';
+    unfallText = 'Für Kinder oder Personen ohne Berufsunfähigkeitsschutz kann eine Unfallversicherung sinnvoll sein. Aber: Eine gute BU deckt mehr ab als eine Unfallversicherung — Unfälle sind nur ein kleiner Teil der BU-Fälle. Wenn du bereits BU hast, ist Unfall meist überflüssig.';
+  } else {
+    unfallStatus = 'nicht-empfohlen';
+    unfallText = 'Eine Unfallversicherung klingt sinnvoll, aber: Nur ~10 % aller Berufsunfähigkeiten entstehen durch Unfälle — der Rest durch Krankheit. Eine Berufsunfähigkeitsversicherung schützt dich umfassender. Wer bereits BU hat braucht Unfall in den meisten Fällen nicht zusätzlich.';
+  }
+  versicherungen.push({ icon: '🤕', name: 'Unfallversicherung', status: unfallStatus, begruendung: unfallText, kosten: '~50–150 € / Jahr' });
+
+  // HANDYVERSICHERUNG
+  versicherungen.push({
+    icon: '📱',
+    name: 'Handyversicherung',
+    status: 'nicht-empfohlen',
+    begruendung: 'Handyversicherungen sind fast immer ein schlechtes Geschäft für den Verbraucher — hohe Prämien, hohe Selbstbeteiligung, viele Ausschlüsse. Über 2-3 Jahre zahlst du oft mehr ein als ein neues Handy kostet. Besser: Geld selbst zur Seite legen oder Handy über die Hausratversicherung mitversichern.',
+    kosten: '~5–15 € / Monat'
+  });
+
+  // Rendern
+  const empfohlen = versicherungen.filter(v => v.status === 'empfohlen');
+  const eherEmpfohlen = versicherungen.filter(v => v.status === 'eher-empfohlen');
+  const eherNicht = versicherungen.filter(v => v.status === 'eher-nicht');
+  const nicht = versicherungen.filter(v => v.status === 'nicht-empfohlen');
+
+  renderVersicherungen('empfohlen-container', empfohlen);
+
+  if (eherEmpfohlen.length > 0) {
+    document.getElementById('eher-empfohlen-label').style.display = 'flex';
+    renderVersicherungen('eher-empfohlen-container', eherEmpfohlen);
+  }
+  if (eherNicht.length > 0) {
+    document.getElementById('eher-nicht-label').style.display = 'flex';
+    renderVersicherungen('eher-nicht-container', eherNicht);
+  }
+  if (nicht.length > 0) {
+    document.getElementById('nicht-label').style.display = 'flex';
+    renderVersicherungen('nicht-container', nicht);
+  }
+}
+
+function renderVersicherungen(containerId, liste) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = liste.map(v => {
+    const tagMap = {
+      'empfohlen': ['tag-empfohlen', '✓ Empfohlen'],
+      'eher-empfohlen': ['tag-eher-empfohlen', '↑ Eher empfohlen'],
+      'eher-nicht': ['tag-eher-nicht', '↓ Eher nicht empfohlen'],
+      'nicht-empfohlen': ['tag-nicht', '✕ Nicht empfohlen']
+    };
+    const [tagClass, tagText] = tagMap[v.status] || ['tag-nicht', v.status];
+    return `
+      <div class="versicherung-card ${v.status}">
+        <div class="versicherung-header">
+          <span class="versicherung-icon">${v.icon}</span>
+          <span class="versicherung-name">${v.name}</span>
+          <span class="versicherung-tag ${tagClass}">${tagText}</span>
+        </div>
+        <div class="versicherung-begruendung">${v.begruendung}</div>
+        <span class="versicherung-kosten">Typische Kosten: ${v.kosten}</span>
+      </div>`;
+  }).join('');
+}
+
+function neustart() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.btn-next').forEach(b => b.disabled = true);
+  document.getElementById('step-1').classList.add('active');
+  document.getElementById('empfohlen-container').innerHTML = '';
+  document.getElementById('eher-empfohlen-container').innerHTML = '';
+  document.getElementById('eher-nicht-container').innerHTML = '';
+  document.getElementById('nicht-container').innerHTML = '';
+  document.getElementById('eher-empfohlen-label').style.display = 'none';
+  document.getElementById('eher-nicht-label').style.display = 'none';
+  document.getElementById('nicht-label').style.display = 'none';
+  updateProgress(1);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

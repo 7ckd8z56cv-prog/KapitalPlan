@@ -43,7 +43,7 @@
   /* PROGRESS */
   .progress-bar { background: var(--border); border-radius: 100px; height: 4px; margin-bottom: 2rem; overflow: hidden; }
   .progress-fill { height: 100%; background: var(--accent); border-radius: 100px; transition: width 0.4s ease; }
-  .progress-label { font-size: 0.72rem; color: var(--ink-muted); font-family: var(--mono); margin-bottom: 0.5rem; }
+  .progress-label { font-size: 0.95rem; font-weight: 600; color: var(--accent); font-family: var(--mono); margin-bottom: 0.75rem; }
 
   /* STEP CARD */
   .step { display: none; }
@@ -77,15 +77,15 @@
   .btn-back { padding: 0.9rem 1.25rem; background: var(--surface2); color: var(--ink-muted); border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: var(--sans); font-size: 0.95rem; font-weight: 600; cursor: pointer; }
 
   /* RESULTS */
-  .result-header { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 1.75rem; margin-bottom: 1.25rem; }
-  .profil-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.4rem 1rem; border-radius: 100px; font-size: 0.78rem; font-weight: 700; margin-bottom: 1rem; }
+  .result-header { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 2.25rem; margin-bottom: 1.5rem; }
+  .profil-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.25rem; border-radius: 100px; font-size: 0.92rem; font-weight: 700; margin-bottom: 1.25rem; }
   .profil-badge.avers { background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent-border); }
   .profil-badge.neutral { background: #f0f4ff; color: #3b5bdb; border: 1px solid #bac8ff; }
   .profil-badge.freudig { background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange-border); }
-  .result-headline { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
-  .result-sub { font-size: 0.88rem; color: var(--ink-muted); line-height: 1.7; }
+  .result-headline { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+  .result-sub { font-size: 1.05rem; color: var(--ink-muted); line-height: 1.75; }
 
-  .versicherung-card { background: var(--surface); border-radius: var(--radius); border: 1.5px solid var(--border); box-shadow: var(--shadow); padding: 1.5rem; margin-bottom: 1rem; overflow: hidden; }
+  .versicherung-card { background: var(--surface); border-radius: var(--radius); border: 1.5px solid var(--border); box-shadow: var(--shadow); padding: 2rem; margin-bottom: 1.25rem; overflow: hidden; }
   .versicherung-card.empfohlen { border-color: var(--accent); }
   .versicherung-card.eher-empfohlen { border-color: #4dabf7; }
   .versicherung-card.eher-nicht { border-color: #f0b84d; }
@@ -93,20 +93,22 @@
   
   
 
-  .versicherung-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
-  .versicherung-icon { font-size: 1.4rem; }
-  .versicherung-name { font-size: 1rem; font-weight: 700; letter-spacing: -0.01em; flex: 1; }
-  .versicherung-tag { font-size: 0.65rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 100px; letter-spacing: 0.04em; white-space: nowrap; }
+  .versicherung-header { display: flex; align-items: center; gap: 0.85rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .versicherung-icon { font-size: 1.9rem; }
+  .versicherung-name { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; flex: 1; }
+  .versicherung-tag { font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.8rem; border-radius: 100px; letter-spacing: 0.04em; white-space: nowrap; }
   .tag-empfohlen { background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent-border); }
   .tag-eher-empfohlen { background: #e7f5ff; color: #1971c2; border: 1px solid #74c0fc; }
   .tag-eher-nicht { background: #fffbf0; color: #8a6200; border: 1px solid #f0b84d; }
   .tag-nicht { background: var(--surface2); color: var(--ink-muted); border: 1px solid var(--border); }
   .tag-nicht { background: var(--surface2); color: var(--ink-muted); border: 1px solid var(--border); }
 
-  .versicherung-begruendung { font-size: 0.83rem; color: var(--ink-muted); line-height: 1.7; margin-bottom: 0.75rem; }
-  .versicherung-kosten { font-size: 0.78rem; font-family: var(--mono); color: var(--ink-muted); padding: 0.5rem 0.75rem; background: var(--surface2); border-radius: 6px; display: inline-block; }
+  .versicherung-begruendung { font-size: 1rem; color: var(--ink-muted); line-height: 1.8; margin-bottom: 1rem; }
+  .versicherung-kosten { font-size: 0.88rem; font-family: var(--mono); color: var(--ink-muted); padding: 0.6rem 0.9rem; background: var(--surface2); border-radius: 8px; display: inline-block; margin-bottom: 1rem; }
+  .versicherung-link { display: block; margin-top: 1rem; padding: 0.85rem 1.25rem; background: var(--orange); color: white; border-radius: var(--radius-sm); font-family: var(--sans); font-size: 0.92rem; font-weight: 600; text-align: center; text-decoration: none; box-shadow: 0 2px 8px rgba(230,126,34,0.25); }
+  .versicherung-link-label { font-size: 0.62rem; font-family: var(--mono); color: var(--ink-muted); text-align: right; margin-top: 1rem; margin-bottom: 0.25rem; letter-spacing: 0.05em; }
 
-  .section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); margin: 1.5rem 0 1rem; display: flex; align-items: center; gap: 0.75rem; }
+  .section-label { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); margin: 2rem 0 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
   .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
   .disclaimer { font-size: 0.7rem; color: var(--ink-muted); line-height: 1.7; text-align: center; padding: 1.25rem 0 0; border-top: 1px solid var(--border); margin-top: 1.5rem; }
@@ -133,7 +135,7 @@
   </div>
 </header>
 
-<main>
+<main id="main-content">
   <div class="progress-label" id="progress-label">Frage 1 von 8</div>
   <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:12.5%"></div></div>
 
@@ -366,10 +368,10 @@
     <div class="section-label" id="nicht-label" style="display:none">❌ Nicht empfohlen</div>
     <div id="nicht-container"></div>
 
-    <div style="margin-top:1.5rem;">
-      <div style="font-size:0.65rem; font-family:var(--mono); color:var(--ink-muted); text-align:right; margin-bottom:0.3rem; letter-spacing:0.05em;">ANZEIGE</div>
-      <a href="https://a.partner-versicherung.de/click.php?partner_id=202298&ad_id=15&deep=rentenversicherung" target="_blank" style="display:block; width:100%; padding:1rem 1.5rem; background:var(--orange); color:white; border-radius:var(--radius-sm); font-family:var(--sans); font-size:0.95rem; font-weight:600; text-align:center; text-decoration:none; box-shadow:0 2px 8px rgba(230,126,34,0.3);">
-        Versicherungen kostenlos vergleichen →
+    <div style="margin-top:2rem;">
+      <div style="font-size:0.65rem; font-family:var(--mono); color:var(--ink-muted); text-align:right; margin-bottom:0.3rem; letter-spacing:0.05em;">ANZEIGE — wir erhalten ggf. eine Provision, für dich keine Mehrkosten</div>
+      <a href="https://a.partner-versicherung.de/click.php?partner_id=202298&ad_id=15&deep=rentenversicherung" target="_blank" style="display:block; width:100%; padding:1.1rem 1.5rem; background:var(--orange); color:white; border-radius:var(--radius-sm); font-family:var(--sans); font-size:1.05rem; font-weight:700; text-align:center; text-decoration:none; box-shadow:0 2px 8px rgba(230,126,34,0.3);">
+        Alle Versicherungen im Überblick vergleichen →
       </a>
       <p style="font-size:0.7rem; color:var(--ink-muted); text-align:center; margin-top:0.5rem; font-family:var(--mono);">Kostenlos & unverbindlich · Powered by Tarifcheck</p>
     </div>
@@ -406,19 +408,25 @@ function select(step, value, el) {
   if (nextBtn) nextBtn.disabled = false;
 }
 
+function smartScroll() {
+  const target = document.getElementById('main-content');
+  const y = target.getBoundingClientRect().top + window.pageYOffset - 16;
+  window.scrollTo({ top: y, behavior: 'smooth' });
+}
+
 function nextStep(current) {
   if (!answers[current]) return;
   document.getElementById(`step-${current}`).classList.remove('active');
   document.getElementById(`step-${current + 1}`).classList.add('active');
   updateProgress(current + 1);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  smartScroll();
 }
 
 function prevStep(current) {
   document.getElementById(`step-${current}`).classList.remove('active');
   document.getElementById(`step-${current - 1}`).classList.add('active');
   updateProgress(current - 1);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  smartScroll();
 }
 
 function updateProgress(step) {
@@ -445,7 +453,7 @@ function auswerten() {
   document.getElementById('step-8').classList.remove('active');
   document.getElementById('step-9').classList.add('active');
   updateProgress(9);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  smartScroll();
 
   const profil = getRisikoProfil();
   const wohnen = answers[3];
@@ -615,6 +623,17 @@ function auswerten() {
 
 function renderVersicherungen(containerId, liste) {
   const container = document.getElementById(containerId);
+
+  const deepLinkMap = {
+    'Private Haftpflichtversicherung': { deep: 'haftpflichtversicherung', label: 'Haftpflicht vergleichen →' },
+    'Hausratversicherung': { deep: 'hausratversicherung', label: 'Hausrat vergleichen →' },
+    'Berufsunfähigkeitsversicherung': { deep: 'berufsunfaehigkeitsversicherung', label: 'BU vergleichen →' },
+    'Zahnzusatzversicherung': { deep: 'krankenzusatzversicherung', label: 'Zahnzusatz vergleichen →' },
+    'Rechtsschutzversicherung': { deep: 'rechtsschutzversicherung', label: 'Rechtsschutz vergleichen →' },
+    'Risikolebensversicherung': { deep: 'risikolebensversicherung', label: 'Risikoleben vergleichen →' },
+    'Unfallversicherung': { deep: 'unfallversicherung', label: 'Unfall vergleichen →' }
+  };
+
   container.innerHTML = liste.map(v => {
     const tagMap = {
       'empfohlen': ['tag-empfohlen', '✓ Empfohlen'],
@@ -623,6 +642,12 @@ function renderVersicherungen(containerId, liste) {
       'nicht-empfohlen': ['tag-nicht', '✕ Nicht empfohlen']
     };
     const [tagClass, tagText] = tagMap[v.status] || ['tag-nicht', v.status];
+
+    const showLink = (v.status === 'empfohlen' || v.status === 'eher-empfohlen') && deepLinkMap[v.name];
+    const linkHtml = showLink ? `
+        <div class="versicherung-link-label">ANZEIGE</div>
+        <a class="versicherung-link" href="https://a.partner-versicherung.de/click.php?partner_id=202298&ad_id=15&deep=${deepLinkMap[v.name].deep}" target="_blank">${deepLinkMap[v.name].label}</a>` : '';
+
     return `
       <div class="versicherung-card ${v.status}">
         <div class="versicherung-header">
@@ -632,6 +657,7 @@ function renderVersicherungen(containerId, liste) {
         </div>
         <div class="versicherung-begruendung">${v.begruendung}</div>
         <span class="versicherung-kosten">Typische Kosten: ${v.kosten}</span>
+        ${linkHtml}
       </div>`;
   }).join('');
 }

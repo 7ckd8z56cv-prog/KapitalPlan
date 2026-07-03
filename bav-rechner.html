@@ -736,7 +736,7 @@
 
       </div>
       <p style="font-size:0.72rem; color:var(--ink-muted); margin-top:1rem; line-height:1.6;">
-        * GRV-Kürzung: Schätzung basierend auf Rentenpunkteverlust durch Entgeltumwandlung (~50.000 € Durchschnittsentgelt, ~39 € Rentenwert/Punkt, <span id="bilanz-grv-jahre">—</span> Jahre Bezugsdauer). Als Näherungswert — tatsächliche Kürzung abhängig von Einkommensverlauf und Gesetzgebung.
+        * GRV-Kürzung: Schätzung basierend auf Rentenpunkteverlust durch Entgeltumwandlung (~51.944 € vorläufiges Durchschnittsentgelt 2026, ~41 € Rentenwert/Punkt, <span id="bilanz-grv-jahre">—</span> Jahre Bezugsdauer). Nur der sozialabgabenfreie Anteil bis 4 % der Beitragsbemessungsgrenze mindert die gesetzliche Rente. Näherungswert — tatsächliche Kürzung abhängig von Einkommensverlauf und Gesetzgebung.
       </p>
     </div>
 
@@ -764,6 +764,7 @@
         <li>ETF-Rendite: 6,5 % p.a. (konservativer MSCI World Schätzwert), abzüglich ~0,2 % TER</li>
         <li>bAV-Rendite vor Kosten: ETF-Tarif ~6,5 %, typischer Firmenvertrag ~4 %, Altvertrag ~2,5 % — jeweils abzüglich Effektivkosten</li>
         <li>Abschlusskosten (Zillmerung): 2,5 % der Beitragssumme bei typischem und altem Vertrag — beim ETF-Tarif nicht eingerechnet</li>
+        <li>Ersparnis in der Ansparphase: persönlicher Grenzsteuersatz + 21,15 % Sozialabgaben (AN-Anteil 2026, sofern unter der Beitragsbemessungsgrenze)</li>
         <li>bAV im Rentenalter: volle Einkommensteuer + KV 17,5 % auf Teil über Freibetrag 197,75 €/Mo. + PV 3,6 % auf gesamte Rente (Stand 2026)</li>
         <li>ETF: Abgeltungsteuer 26,375 % auf Gewinnanteil nach 30 % Teilfreistellung</li>
         <li>Inflation nicht berücksichtigt — betrifft beide Seiten gleichermaßen</li>
@@ -882,7 +883,8 @@ function grenzsteuersatz(monatsbrutto, klasse) {
   }
 }
 
-const SV = 0.205;
+// AN-Anteil Sozialversicherung 2026: RV 9,3% + ALV 1,3% + KV ~7,8% (halb 14,6% + halb 2,9% Zusatz) + PV 1,8% = ca. 21,15%
+const SV = 0.2115;
 
 function berechnen() {
   const brutto   = parseFloat(document.getElementById('brutto').value);
@@ -920,10 +922,10 @@ function berechnen() {
   const bavEinzahlung = bavMonatl * 12 * jahre;
   const etfEinzahlung = etfSparrate * 12 * jahre;
 
-  // bAV im Rentenalter: KV 17,5% + PV 3,6% = 21,1% gesamt
-  // Freibetrag 197,75€/Monat = 2373€/Jahr gilt nur für KV, nicht PV
-  const kvSatz = 0.175; // KV: 14,6% + 2,9% Zusatzbeitrag, Rentner zahlt allein
-  const pvSatz = 0.036; // PV: Rentner zahlt allein
+  // bAV im Rentenalter: gesetzlich Versicherte zahlen KV+PV allein (Doppelverbeitragung)
+  // KV-Freibetrag 2026: 197,75 €/Monat = 2.373 €/Jahr, gilt nur für KV (nicht PV)
+  const kvSatz = 0.175; // KV: 14,6% allgemeiner Satz + ~2,9% Zusatzbeitrag (Rentner zahlt vollen Beitrag)
+  const pvSatz = 0.036; // PV 2026: 3,6% (ohne Kinderlosenzuschlag; Rentner zahlt allein)
   const kvFreibetragJahr = 2373;
   const bavJahresrente = bavKapital * 0.04;
   const kvPflichtig = Math.max(0, bavJahresrente - kvFreibetragJahr) / bavJahresrente;
@@ -932,10 +934,15 @@ function berechnen() {
   const bavNettoOhneGRV = bavKapital * (1 - bavAbzug);
 
   // GRV-Rentenkürzung: inflationsbereinigt auf heutigen Geldwert
-  const durchschnittsentgelt = 50000;
-  const rentenwert = 39;
+  // Werte 2026: vorläufiges Durchschnittsentgelt, aktueller Rentenwert (nach Anpassung 1.7.2026)
+  const durchschnittsentgelt = 51944;   // vorläufiges Durchschnittsentgelt 2026
+  const rentenwert = 41;                 // aktueller Rentenwert 2026 (~41 €/Entgeltpunkt)
+  const bbgRV = 101400;                  // Beitragsbemessungsgrenze RV 2026 (bundeseinheitlich)
   const rentenbezugsdauer = 20;
-  const rpVerlustProJahr = (beitrag * 12) / durchschnittsentgelt;
+  // Nur der sozialabgabenfreie Anteil (max. 4% der BBG/Jahr) mindert die GRV-Ansprüche
+  const svFreiJahr = bbgRV * 0.04;
+  const grvRelevanterBeitrag = Math.min(beitrag * 12, svFreiJahr);
+  const rpVerlustProJahr = grvRelevanterBeitrag / durchschnittsentgelt;
   const rpVerlustGesamt = rpVerlustProJahr * jahre;
   const monatlicheRentenkürzung = rpVerlustGesamt * rentenwert;
   // Nominale GRV-Kürzung über 20 Jahre Bezug

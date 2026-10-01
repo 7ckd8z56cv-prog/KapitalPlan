@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brutto-Netto-Rechner 2026 — Was bleibt vom Gehalt? | KapitalPlan</title>
+<meta name="description" content="Kostenloser Brutto-Netto-Rechner 2026: Berechne dein Nettogehalt mit allen Sozialabgaben, Lohnsteuer und Soli — transparent und mit offengelegten Annahmen.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+<link rel="shortcut icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f2f1ec; --surface: #ffffff; --surface2: #faf9f5;
+    --ink: #191712; --ink-muted: #6b6558;
+    --accent: #1a6b4a; --accent-bg: #edf3ee; --accent-border: #b7d4c1;
+    --gold: #9c7a26; --gold-bg: #faf5e6; --gold-border: #e3d3a1;
+    --border: #e2ded3;
+    --radius: 4px; --radius-lg: 6px;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Source Sans 3', system-ui, sans-serif;
+  }
+  html, body { overflow-x: hidden; max-width: 100%; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); min-height: 100vh; line-height: 1.55; }
+
+  nav { background: #14231a; padding: 0.9rem 1.25rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .nav-logo { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; color: white; text-decoration: none; letter-spacing: -0.01em; }
+  .nav-logo span { color: #8fc9a8; font-style: italic; }
+  .nav-link { font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.75); text-decoration: none; padding: 0.4rem 0.9rem; border: 1px solid rgba(255,255,255,0.2); }
+
+  header { background: #14231a; color: white; padding: 2.75rem 1.5rem 3rem; }
+  .header-inner { max-width: 700px; margin: 0 auto; }
+  .header-rule { width: 40px; height: 3px; background: #4d9a6f; margin-bottom: 1.5rem; }
+  header h1 { font-family: var(--serif); font-size: clamp(1.85rem, 4.5vw, 2.6rem); font-weight: 600; letter-spacing: -0.01em; margin-bottom: 0.85rem; line-height: 1.2; }
+  header h1 em { color: #8fc9a8; font-style: italic; }
+  header p { font-size: 1rem; color: rgba(255,255,255,0.68); line-height: 1.65; max-width: 46ch; }
+
+  main { max-width: 700px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+  .back-btn { display: inline-block; font-size: 0.85rem; font-weight: 600; color: var(--ink-muted); text-decoration: none; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 2px; }
+  .back-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin-bottom: 1.5rem; }
+  .panel-title { font-family: var(--serif); font-size: 1.05rem; font-weight: 600; color: var(--ink); margin-bottom: 1.5rem; padding-bottom: 0.85rem; border-bottom: 1px solid var(--border); }
+
+  .field { margin-bottom: 1.6rem; }
+  .field:last-child { margin-bottom: 0; }
+  .field-label { display: block; font-size: 0.92rem; font-weight: 600; margin-bottom: 0.2rem; }
+  .field-hint { font-size: 0.82rem; color: var(--ink-muted); margin-bottom: 0.8rem; line-height: 1.55; }
+
+  .slider-row { display: flex; align-items: center; gap: 1rem; }
+  input[type="range"] { flex: 1; -webkit-appearance: none; appearance: none; height: 3px; background: var(--border); outline: none; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 3px solid white; box-shadow: 0 0 0 1px var(--accent); }
+  input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 3px solid white; box-shadow: 0 0 0 1px var(--accent); }
+  .slider-value { font-family: var(--sans); font-variant-numeric: tabular-nums; font-size: 1.15rem; font-weight: 700; color: var(--accent); min-width: 108px; text-align: right; }
+  .input-unit-wrap { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .slider-value-input { font-family: var(--sans); font-variant-numeric: tabular-nums; font-size: 1.15rem; font-weight: 700; color: var(--accent); width: 78px; text-align: right; border: 1px solid var(--border); border-radius: var(--radius); padding: 0.3rem 0.5rem; background: var(--surface2); -moz-appearance: textfield; }
+  .slider-value-input::-webkit-outer-spin-button, .slider-value-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .slider-value-input:focus { outline: none; border-color: var(--accent); background: white; }
+  .input-unit { font-family: var(--sans); font-size: 0.95rem; font-weight: 600; color: var(--ink-muted); }
+  .input-unit-wrap--solo { width: 100%; }
+  .slider-value-input--solo { width: 100%; font-size: 1.5rem; padding: 0.7rem 0.9rem; text-align: left; }
+  .input-unit-wrap--solo .input-unit { position: relative; margin-left: -2.2rem; pointer-events: none; }
+
+  .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .opt-btn { flex: 1; min-width: 62px; padding: 0.65rem 0.4rem; border: 1px solid var(--border); background: var(--surface2); border-radius: var(--radius); font-family: var(--sans); font-size: 0.88rem; font-weight: 600; color: var(--ink); cursor: pointer; transition: all 0.15s; }
+  .opt-btn.active { border-color: var(--accent); background: var(--accent); color: white; }
+
+  .select-input { width: 100%; padding: 0.8rem 1rem; border: 1px solid var(--border); background: var(--surface2); border-radius: var(--radius); font-family: var(--sans); font-size: 0.92rem; font-weight: 600; color: var(--ink); cursor: pointer; appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b6558' stroke-width='2.5' stroke-linecap='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 16px; padding-right: 2.75rem; }
+  .select-input:focus { outline: none; border-color: var(--accent); }
+
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.8rem 1rem; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer; }
+  .toggle-row.active { border-color: var(--accent); background: var(--accent-bg); }
+  .toggle-label { font-size: 0.9rem; font-weight: 600; }
+  .toggle-switch { width: 40px; height: 22px; border-radius: 100px; background: var(--border); position: relative; flex-shrink: 0; transition: background 0.2s; }
+  .toggle-row.active .toggle-switch { background: var(--accent); }
+  .toggle-knob { position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: white; transition: left 0.2s; }
+  .toggle-row.active .toggle-knob { left: 20px; }
+
+  /* Ergebnis: bewusst editorial statt SaaS-Gradient-Karte */
+  .result-hero { background: #14231a; color: white; padding: 2.5rem 2rem; margin-bottom: 1.5rem; text-align: left; border-left: 4px solid #4d9a6f; }
+  .result-hero-label { font-family: var(--serif); font-style: italic; font-size: 1rem; color: rgba(255,255,255,0.65); margin-bottom: 0.6rem; }
+  .result-hero-num { font-family: var(--sans); font-variant-numeric: tabular-nums lining-nums; font-size: 3.5rem; font-weight: 800; color: #8fc9a8; line-height: 1; letter-spacing: -0.02em; }
+  .result-hero-sub { font-size: 0.92rem; color: rgba(255,255,255,0.6); margin-top: 0.85rem; }
+
+  .breakdown { display: flex; flex-direction: column; margin-bottom: 1.5rem; border-top: 1px solid var(--border); }
+  .brow { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border); }
+  .brow.zero { opacity: 0.4; }
+  .brow.sum { border-bottom: none; border-top: 2px solid var(--ink); margin-top: 0.4rem; padding-top: 0.9rem; font-weight: 700; }
+  .blabel { font-size: 0.9rem; }
+  .bval { font-family: var(--sans); font-variant-numeric: tabular-nums; font-size: 1.05rem; font-weight: 700; }
+  .bval.minus { color: #a4442f; }
+  .bval.plus { color: var(--accent); }
+
+  .sub-head { font-family: var(--serif); font-style: italic; font-size: 0.95rem; color: var(--ink-muted); margin: 1.6rem 0 0.3rem; }
+  .sub-head:first-of-type { margin-top: 0; }
+
+  /* Annahmen: als Randnotiz gestaltet statt gleicher Karten-Look */
+  .note { background: var(--gold-bg); border: 1px solid var(--gold-border); border-left: 3px solid var(--gold); padding: 1.6rem 1.8rem; border-radius: 0 var(--radius) var(--radius) 0; }
+  .note-title { font-family: var(--serif); font-style: italic; font-size: 1rem; color: #6b5310; margin-bottom: 1rem; }
+  .note-item { font-size: 0.85rem; color: #5c4a17; line-height: 1.65; margin-bottom: 0.65rem; padding-left: 1rem; position: relative; }
+  .note-item:last-child { margin-bottom: 0; }
+  .note-item::before { content: '—'; position: absolute; left: 0; color: var(--gold); }
+
+  .cta { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--accent); padding: 1.8rem 2rem; margin: 2rem 0 1.5rem; }
+  .cta p { font-family: var(--serif); font-size: 1.1rem; font-weight: 500; color: var(--ink); margin-bottom: 1rem; line-height: 1.4; }
+  .cta a { display: inline-block; padding: 0.7rem 1.4rem; background: var(--accent); color: white; border-radius: var(--radius); font-weight: 600; text-decoration: none; font-size: 0.9rem; }
+
+  .disclaimer { font-size: 0.75rem; color: var(--ink-muted); line-height: 1.7; padding-top: 1rem; }
+  .stand { font-size: 0.75rem; font-family: var(--sans); font-variant-numeric: tabular-nums; color: var(--ink-muted); margin-bottom: 0.5rem; letter-spacing: 0.02em; }
+
+  footer { background: #14231a; color: rgba(255,255,255,0.5); padding: 2.25rem 1.5rem; }
+  .footer-inner { max-width: 700px; margin: 0 auto; font-size: 0.78rem; line-height: 1.75; }
+  .footer-inner a { color: rgba(255,255,255,0.55); text-decoration: none; }
+  .footer-inner strong { font-family: var(--serif); color: white; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Kapital<span>Plan</span></a>
+  <a href="index.html" class="nav-link">Alle Rechner</a>
+</nav>
+
+<header>
+  <div class="header-inner">
+    <div class="header-rule"></div>
+    <h1>Was bleibt wirklich von <em>deinem Brutto?</em></h1>
+    <p>Berechne dein Nettogehalt 2026 — mit allen Sozialabgaben, Lohnsteuer und Soli. Alle Annahmen offengelegt.</p>
+  </div>
+</header>
+
+<main>
+  <a href="index.html" class="back-btn">Zurück zur Übersicht</a>
+
+  <div class="panel">
+    <div class="panel-title">Deine Angaben</div>
+
+    <div class="field">
+      <label class="field-label" for="brutto">Bruttogehalt</label>
+      <div class="field-hint">Dein Gehalt vor allen Abzügen.</div>
+      <div class="btn-group" id="periode-btns" style="margin-bottom:0.85rem;">
+        <button class="opt-btn active" data-p="monat" onclick="setPeriode('monat')">pro Monat</button>
+        <button class="opt-btn" data-p="jahr" onclick="setPeriode('jahr')">pro Jahr</button>
+      </div>
+      <span class="input-unit-wrap input-unit-wrap--solo"><input type="number" class="slider-value-input slider-value-input--solo" id="brutto" min="500" max="144000" step="10" value="4000" oninput="rechne()" inputmode="numeric"><span class="input-unit" id="brutto-unit">€</span></span>
+      <div style="font-size:0.78rem; color:var(--ink-muted); font-family:var(--sans); font-variant-numeric:tabular-nums; margin-top:0.6rem; text-align:right;" id="brutto-alt">entspricht 48.000 € im Jahr</div>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="klasse-select">Steuerklasse</label>
+      <div class="field-hint">Klasse V und VI sind hier nicht abgebildet — dafür gilt ein Sonderverfahren.</div>
+      <select id="klasse-select" class="select-input" onchange="setKlasse(parseInt(this.value))">
+        <option value="1">Steuerklasse I — ledig</option>
+        <option value="2">Steuerklasse II — alleinerziehend</option>
+        <option value="3">Steuerklasse III — verheiratet, höheres Einkommen</option>
+        <option value="4">Steuerklasse IV — verheiratet, ähnliches Einkommen</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="zusatz">Zusatzbeitrag deiner Krankenkasse</label>
+      <div class="field-hint">Durchschnitt 2026: 2,9 %. Deinen genauen Satz findest du auf der Kassen-Website.</div>
+      <div class="slider-row">
+        <input type="range" id="zusatz" min="0" max="4.5" step="0.01" value="2.90" oninput="syncFromSlider('zusatz')">
+        <span class="input-unit-wrap"><input type="number" class="slider-value-input" id="zusatz-val" value="2.90" step="0.01" oninput="syncFromInput('zusatz')" inputmode="decimal"><span class="input-unit">%</span></span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Kinder</label>
+      <div class="field-hint">Wer keine Kinder hat, zahlt ab dem 23. Lebensjahr einen Zuschlag in der Pflegeversicherung.</div>
+      <div class="toggle-row active" id="kind-toggle" onclick="toggleKind()">
+        <span class="toggle-label">Ich habe keine Kinder</span>
+        <span class="toggle-switch"><span class="toggle-knob"></span></span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Kirchensteuer</label>
+      <div class="btn-group" id="kirche-btns">
+        <button class="opt-btn active" data-kk="0" onclick="setKirche(0)">Keine</button>
+        <button class="opt-btn" data-kk="8" onclick="setKirche(8)">8 %</button>
+        <button class="opt-btn" data-kk="9" onclick="setKirche(9)">9 %</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="result-hero">
+    <div class="result-hero-label">Dein Netto, pro Monat</div>
+    <div class="result-hero-num" id="netto-mon">—</div>
+    <div class="result-hero-sub" id="netto-sub">—</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Wo dein Geld hingeht</div>
+    <div class="sub-head">Sozialabgaben — Arbeitnehmeranteil</div>
+    <div class="breakdown" id="sv-breakdown"></div>
+    <div class="sub-head">Steuern</div>
+    <div class="breakdown" id="steuer-breakdown"></div>
+    <div class="breakdown" id="summe-breakdown"></div>
+  </div>
+
+  <div class="note">
+    <div class="note-title">Annahmen &amp; Hinweise</div>
+    <div class="note-item">Rechtsstand 2026: Grundfreibetrag 12.348 €, Beitragsbemessungsgrenze Renten-/Arbeitslosenversicherung 101.400 €/Jahr, Kranken-/Pflegeversicherung 69.750 €/Jahr.</div>
+    <div class="note-item">Beitragssätze (Arbeitnehmeranteil): Rente 9,3 %, Arbeitslosenversicherung 1,3 %, Krankenversicherung 7,3 % plus halber Zusatzbeitrag, Pflege 1,8 % (kinderlos ab 23: +0,6 % allein zu tragen).</div>
+    <div class="note-item">Berücksichtigt sind Arbeitnehmer-Pauschbetrag (1.230 €), Sonderausgaben-Pauschbetrag (36 €) und die Vorsorgepauschale. Bei Steuerklasse II zusätzlich der Entlastungsbetrag für Alleinerziehende.</div>
+    <div class="note-item">Nicht berücksichtigt: individuelle Freibeträge, Kinderfreibeträge, geldwerte Vorteile, betriebliche Altersvorsorge, Einmalzahlungen und private Krankenversicherung.</div>
+    <div class="note-item">Der Solidaritätszuschlag entfällt für die allermeisten Beschäftigten und greift erst bei sehr hohen Einkommen.</div>
+    <div class="note-item">Vereinfachte Modellrechnung zur Orientierung — keine Steuerberatung. Dein tatsächliches Netto kann abweichen.</div>
+  </div>
+
+  <div class="cta">
+    <p>Wie viel von deinem Netto solltest du fürs Alter zurücklegen?</p>
+    <a href="index.html">Alle Rechner ansehen</a>
+  </div>
+
+  <div class="stand">Stand der Berechnung: 2026</div>
+  <div class="disclaimer">
+    Diese Website stellt keine Steuer-, Finanz- oder Rechtsberatung dar. Alle Angaben ohne Gewähr.
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <strong>KapitalPlan</strong><br>
+    <a href="index.html">Alle Rechner</a><br><br>
+    Robert Meyer<br>
+    Paulinenallee 15, 22769 Hamburg<br>
+    rpmax.meyer@gmail.com<br>
+    Diese Website stellt keine Finanz-, Steuer- oder Rechtsberatung dar. Alle Angaben ohne Gewähr. Stand: 2026.<br>
+    © 2026 KapitalPlan
+  </div>
+</footer>
+
+<script>
+let klasse = 1;
+let kinderlos = true;
+let kirche = 0;
+let periode = 'monat';
+
+const BBG_RV = 101400;
+const BBG_KV = 69750;
+
+function setKlasse(k){
+  klasse = k;
+  rechne();
+}
+
+function setPeriode(p){
+  if (p === periode) return;
+  const slider = document.getElementById('brutto');
+  const aktuellMonat = periode === 'monat' ? parseInt(slider.value) : parseInt(slider.value)/12;
+  periode = p;
+  document.querySelectorAll('#periode-btns .opt-btn').forEach(b => b.classList.toggle('active', b.dataset.p === p));
+  if (p === 'jahr'){
+    slider.min = 6000; slider.max = 144000; slider.step = 500;
+    slider.value = Math.round(aktuellMonat*12/500)*500;
+  } else {
+    slider.min = 500; slider.max = 12000; slider.step = 50;
+    slider.value = Math.round(aktuellMonat/50)*50;
+  }
+  rechne();
+}
+
+function setKirche(v){
+  kirche = v;
+  document.querySelectorAll('#kirche-btns .opt-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.kk) === v));
+  rechne();
+}
+function toggleKind(){
+  kinderlos = !kinderlos;
+  document.getElementById('kind-toggle').classList.toggle('active', kinderlos);
+  rechne();
+}
+
+function fmt(n){ return Math.round(n).toLocaleString('de-DE') + ' €'; }
+
+// Einkommensteuertarif 2026 (§ 32a EStG)
+function estTarif(zvE){
+  const x = Math.floor(zvE);
+  if (x <= 12348) return 0;
+  if (x <= 17799){ const y = (x - 12348)/10000; return Math.floor((914.51*y + 1400)*y); }
+  if (x <= 69878){ const z = (x - 17799)/10000; return Math.floor((181.19*z + 2397)*z + 1025.38); }
+  if (x <= 277825) return Math.floor(0.42*x - 10637.32);
+  return Math.floor(0.45*x - 18971.07);
+}
+
+// Regler bewegt -> Zahlenfeld uebernimmt den Wert
+function syncFromSlider(id){
+  const slider = document.getElementById(id);
+  const field = document.getElementById(id + '-val');
+  field.value = slider.value;
+  rechne();
+}
+
+// Zahl eingetippt -> Regler springt mit (inkl. Begrenzung auf min/max)
+function syncFromInput(id){
+  const slider = document.getElementById(id);
+  const field = document.getElementById(id + '-val');
+  let v = parseFloat(field.value);
+  if (isNaN(v)) return;
+  const min = parseFloat(slider.min), max = parseFloat(slider.max);
+  if (v < min) v = min;
+  if (v > max) v = max;
+  slider.value = v;
+  rechne();
+}
+
+function rechne(){
+  const sliderVal = parseFloat(document.getElementById('brutto').value);
+  const bruttoMon = periode === 'monat' ? sliderVal : sliderVal/12;
+  const zusatz = parseFloat(document.getElementById('zusatz').value);
+  document.getElementById('brutto-alt').textContent = periode === 'monat'
+    ? 'entspricht ' + Math.round(bruttoMon*12).toLocaleString('de-DE') + ' € im Jahr'
+    : 'entspricht ' + Math.round(bruttoMon).toLocaleString('de-DE') + ' € im Monat';
+
+  const jb = bruttoMon * 12;
+  const rvBasis = Math.min(jb, BBG_RV);
+  const kvBasis = Math.min(jb, BBG_KV);
+
+  const rv  = rvBasis * 0.093;
+  const alv = rvBasis * 0.013;
+  const kv  = kvBasis * (0.073 + zusatz/100/2);
+  const pv  = kvBasis * (0.018 + (kinderlos ? 0.006 : 0));
+  const svGesamt = rv + alv + kv + pv;
+
+  const vpRV = rvBasis * 0.093;
+  const vpKVPV = kvBasis * (0.070 + zusatz/100/2) + kvBasis * (0.018 + (kinderlos ? 0.006 : 0));
+  const vorsorge = vpRV + vpKVPV;
+
+  const werbung = 1230, sonder = 36;
+  const entlastung = (klasse === 2) ? 4260 : 0;
+  let zvE = Math.max(0, jb - werbung - sonder - vorsorge - entlastung);
+
+  const lst = (klasse === 3) ? 2 * estTarif(zvE/2) : estTarif(zvE);
+
+  const soliFrei = 20350;
+  let soli = 0;
+  if (lst > soliFrei) soli = Math.min(0.119*(lst - soliFrei), 0.055*lst);
+  const kist = kirche > 0 ? lst * kirche/100 : 0;
+
+  const abzuege = svGesamt + lst + soli + kist;
+  const nettoJ = jb - abzuege;
+  const quote = (nettoJ / jb) * 100;
+
+  document.getElementById('netto-mon').textContent = fmt(nettoJ/12);
+  document.getElementById('netto-sub').textContent =
+    `Das sind ${quote.toFixed(1)} % vom Brutto — ${fmt(nettoJ)} im Jahr`;
+
+  const svRows = [
+    { l: 'Rentenversicherung', v: rv/12 },
+    { l: 'Krankenversicherung', v: kv/12 },
+    { l: 'Pflegeversicherung', v: pv/12 },
+    { l: 'Arbeitslosenversicherung', v: alv/12 }
+  ];
+  document.getElementById('sv-breakdown').innerHTML = svRows.map(r => `
+    <div class="brow"><span class="blabel">${r.l}</span><span class="bval minus">− ${fmt(r.v)}</span></div>`).join('');
+
+  const stRows = [
+    { l: 'Lohnsteuer', v: lst/12 },
+    { l: 'Solidaritätszuschlag', v: soli/12 },
+    { l: 'Kirchensteuer', v: kist/12 }
+  ];
+  document.getElementById('steuer-breakdown').innerHTML = stRows.map(r => `
+    <div class="brow ${r.v === 0 ? 'zero' : ''}"><span class="blabel">${r.l}</span><span class="bval minus">− ${fmt(r.v)}</span></div>`).join('');
+
+  document.getElementById('summe-breakdown').innerHTML = `
+    <div class="brow sum"><span class="blabel">Abzüge gesamt</span><span class="bval minus">− ${fmt(abzuege/12)}</span></div>
+    <div class="brow sum"><span class="blabel">Netto</span><span class="bval plus">${fmt(nettoJ/12)}</span></div>`;
+}
+
+rechne();
+</script>
+
+</body>
+</html>

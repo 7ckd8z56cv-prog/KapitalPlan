@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETF-Rechner — Zwei Anlagen vergleichen | KapitalPlan</title>
+<meta name="description" content="Kostenloser ETF-Rechner: Vergleiche zwei Anlagen direkt miteinander. Rendite, Kosten und Steuern einstellbar — sieh, was der Unterschied über die Jahre ausmacht.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+<link rel="shortcut icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f0f2f5; --surface: #ffffff; --surface2: #f8f9fb;
+    --ink: #0f1117; --ink-muted: #6e7585;
+    --accent: #1a6b4a; --accent-bg: #edf7f2; --accent-border: #a8ddc3;
+    --blue: #2c5fb3; --blue-bg: #eef3fc; --blue-border: #b3ccf0;
+    --gold: #b8860b; --gold-bg: #fdf6e3; --gold-border: #e8d18a;
+    --border: #e4e7ed;
+    --shadow: none;
+    --radius: 4px; --radius-sm: 4px;
+    --sans: 'Source Sans 3', system-ui, sans-serif;
+    --mono: 'Source Sans 3', system-ui, sans-serif; --serif: 'Fraunces', Georgia, serif;
+  }
+  html, body { overflow-x: hidden; max-width: 100%; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); min-height: 100vh; line-height: 1.5; }
+
+  nav { background: rgba(15,36,25,0.97); padding: 0.75rem 1.25rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .nav-logo { font-size: 1.1rem; font-weight: 700; color: white; text-decoration: none; letter-spacing: -0.02em; }
+  .nav-logo span { color: #4ade80; }
+  .nav-link { font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.7); text-decoration: none; padding: 0.4rem 0.85rem; border-radius: 100px; border: 1px solid rgba(255,255,255,0.15); }
+
+  header { background: linear-gradient(135deg, #0f2419 0%, #1a4a30 60%, #1e5c3a 100%); color: white; padding: 2.5rem 1.5rem 2rem; position: relative; overflow: hidden; }
+  header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 30%, rgba(40,180,100,0.12) 0%, transparent 60%); }
+  .header-inner { max-width: 760px; margin: 0 auto; position: relative; }
+  .header-pill { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 100px; padding: 0.3rem 0.85rem; font-size: 0.72rem; font-weight: 500; color: rgba(255,255,255,0.75); margin-bottom: 1rem; letter-spacing: 0.04em; }
+  
+  header h1 { font-size: clamp(1.5rem, 3.5vw, 2.1rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.6rem; line-height: 1.15; }
+  header h1 span { color: #4ade80; }
+  header p { font-size: 0.95rem; color: rgba(255,255,255,0.65); line-height: 1.6; }
+
+  main { max-width: 760px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  .back-btn { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; font-weight: 600; color: var(--accent); text-decoration: none; margin-bottom: 1.5rem; padding: 0.5rem 1rem; background: var(--accent-bg); border: 1.5px solid var(--accent-border); border-radius: 100px; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.75rem; margin-bottom: 1.25rem; }
+  .card-title { font-family: var(--serif); font-size: 1.05rem; font-weight: 600; color: var(--ink); margin-bottom: 1.5rem; padding-bottom: 0.85rem; border-bottom: 1px solid var(--border); }
+  
+
+  .card.szen-a { border-left: 4px solid var(--accent); }
+  .card.szen-b { border-left: 4px solid var(--blue); }
+  .szen-badge { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 0.25rem 0.7rem; border-radius: 100px; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+  .szen-badge.a { background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent-border); }
+  .szen-badge.b { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+
+  .field { margin-bottom: 1.4rem; }
+  .field:last-child { margin-bottom: 0; }
+  .field-label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.15rem; }
+  .field-hint { font-size: 0.78rem; color: var(--ink-muted); margin-bottom: 0.7rem; line-height: 1.5; }
+
+  .slider-row { display: flex; align-items: center; gap: 1rem; }
+  input[type="range"] { flex: 1; -webkit-appearance: none; appearance: none; height: 6px; border-radius: 100px; background: var(--border); outline: none; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); cursor: pointer; box-shadow: 0 2px 6px rgba(26,107,74,0.3); }
+  input[type="range"]::-moz-range-thumb { width: 24px; height: 24px; border: none; border-radius: 50%; background: var(--accent); cursor: pointer; }
+  input[type="range"].blue::-webkit-slider-thumb { background: var(--blue); box-shadow: 0 2px 6px rgba(44,95,179,0.3); }
+  input[type="range"].blue::-moz-range-thumb { background: var(--blue); }
+  .slider-value { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 1.05rem; font-weight: 500; color: var(--accent); min-width: 105px; text-align: right; }
+  .input-unit-wrap { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .slider-value-input { font-family: var(--sans); font-variant-numeric: tabular-nums; font-size: 1.1rem; font-weight: 700; color: var(--accent); width: 78px; text-align: right; border: 1px solid var(--border); border-radius: var(--radius); padding: 0.3rem 0.5rem; background: var(--surface2); -moz-appearance: textfield; }
+  .slider-value-input.blue { color: var(--blue); }
+  .slider-value-input::-webkit-outer-spin-button, .slider-value-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .slider-value-input:focus { outline: none; border-color: var(--accent); background: white; }
+  .input-unit { font-family: var(--sans); font-size: 0.9rem; font-weight: 600; color: var(--ink-muted); }
+  .slider-value.blue { color: var(--blue); }
+
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.85rem 1rem; background: var(--surface2); border: 1.5px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; }
+  .toggle-row.active { border-color: var(--accent); background: var(--accent-bg); }
+  .toggle-label { font-size: 0.9rem; font-weight: 600; }
+  .toggle-switch { width: 44px; height: 26px; border-radius: 100px; background: var(--border); position: relative; flex-shrink: 0; transition: background 0.2s; }
+  .toggle-row.active .toggle-switch { background: var(--accent); }
+  .toggle-knob { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: white; transition: left 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+  .toggle-row.active .toggle-knob { left: 21px; }
+
+  .result-hero { background: #14231a; color: white; padding: 2.5rem 2rem; margin-bottom: 1.25rem; text-align: left; border-left: 4px solid #4d9a6f; }
+  
+  .result-hero-label { font-family: var(--serif); font-style: italic; font-size: 1rem; color: rgba(255,255,255,0.65); margin-bottom: 0.6rem; }
+  .result-hero-num { font-family: var(--sans); font-variant-numeric: tabular-nums lining-nums; font-size: 2.9rem; font-weight: 800; color: #8fc9a8; line-height: 1; letter-spacing: -0.02em; }
+  .result-hero-sub { font-size: 0.92rem; color: rgba(255,255,255,0.6); margin-top: 0.85rem; }
+
+  .bar-block { margin-bottom: 1.4rem; }
+  .bar-head { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; margin-bottom: 0.45rem; flex-wrap: wrap; }
+  .bar-name { font-size: 0.9rem; font-weight: 700; }
+  .bar-val { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 1.05rem; font-weight: 600; }
+  .bar-track { height: 18px; background: var(--surface2); border-radius: 100px; overflow: hidden; border: 1px solid var(--border); }
+  .bar-fill { height: 100%; border-radius: 100px; }
+  .bar-meta { font-size: 0.76rem; color: var(--ink-muted); margin-top: 0.4rem; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+  .brow { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1.1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 0.5rem; }
+  .blabel { font-size: 0.88rem; font-weight: 500; }
+  .bval { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 0.95rem; font-weight: 500; color: var(--accent); }
+
+  .assumptions { background: var(--gold-bg); border: 1px solid var(--gold-border); border-left: 3px solid var(--gold); border-radius: 0 var(--radius) var(--radius) 0; }
+  .assumptions .card-title { font-family: var(--serif); font-style: italic; color: #6b5310; border-bottom-color: var(--gold-border); }
+  .assumption-item { display: flex; gap: 0.6rem; align-items: flex-start; font-size: 0.82rem; color: #6b5300; line-height: 1.6; margin-bottom: 0.5rem; }
+  .assumption-item:last-child { margin-bottom: 0; }
+  .assumption-item::before { content: '—'; color: var(--gold); font-weight: 700; flex-shrink: 0; }
+
+  .cta { background: var(--accent); border-radius: var(--radius); padding: 1.75rem; text-align: center; margin-bottom: 1.25rem; }
+  .cta p { color: rgba(255,255,255,0.8); font-size: 0.85rem; margin-bottom: 1rem; }
+  .cta a { display: inline-block; padding: 0.9rem 2rem; background: white; color: var(--accent); border-radius: var(--radius-sm); font-weight: 700; text-decoration: none; font-size: 0.95rem; }
+
+  .disclaimer { font-size: 0.7rem; color: var(--ink-muted); line-height: 1.7; text-align: center; padding-top: 1rem; }
+  .stand { font-size: 0.7rem; font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink-muted); text-align: center; margin-bottom: 0.5rem; }
+
+  .sep { display: flex; align-items: center; gap: 0.75rem; margin: 2.5rem 0 1.25rem; }
+  .sep-line { flex: 1; height: 1px; background: var(--border); }
+  .sep-txt { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; color: var(--ink-muted); font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+  footer { background: #1a1a18; color: rgba(255,255,255,0.5); padding: 2rem 1.5rem; }
+  .footer-inner { max-width: 760px; margin: 0 auto; font-size: 0.72rem; line-height: 1.7; }
+  .footer-inner a { color: rgba(255,255,255,0.5); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Kapital<span>Plan</span></a>
+  <a href="index.html" class="nav-link">Alle Rechner</a>
+</nav>
+
+<header>
+  <div class="header-inner">
+    <div class="header-pill">Vergleichsrechner — Kostenlos</div>
+    <h1>Was macht <span>ein Prozent</span> Rendite über die Jahre aus?</h1>
+    <p>Vergleiche zwei Anlagen direkt: Rendite, Kosten und Steuern frei einstellbar. Der Unterschied überrascht die meisten.</p>
+  </div>
+</header>
+
+<main>
+  <a href="index.html" class="back-btn">Zurück zur Übersicht</a>
+
+  <div class="card">
+    <div class="card-title">Deine Einzahlungen</div>
+
+    <div class="field">
+      <label class="field-label" for="einmal">Startkapital</label>
+      <div class="field-hint">Was du heute schon anlegen kannst.</div>
+      <div class="slider-row">
+        <input type="range" id="einmal" min="0" max="100000" step="500" value="5000" oninput="syncFromSlider('einmal')">
+        <span class="input-unit-wrap"><input type="number" class="slider-value-input" id="einmal-val" value="5000" step="500" oninput="syncFromInput('einmal')" inputmode="numeric"><span class="input-unit">€</span></span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="rate">Monatliche Sparrate</label>
+      <div class="slider-row">
+        <input type="range" id="rate" min="0" max="2000" step="25" value="300" oninput="syncFromSlider('rate')">
+        <span class="input-unit-wrap"><input type="number" class="slider-value-input" id="rate-val" value="300" oninput="syncFromInput('rate')" inputmode="numeric"><span class="input-unit">€</span></span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="jahre">Anlagedauer</label>
+      <div class="slider-row">
+        <input type="range" id="jahre" min="1" max="45" step="1" value="25" oninput="syncFromSlider('jahre')">
+        <span class="input-unit-wrap"><input type="number" class="slider-value-input" id="jahre-val" value="25" step="1" oninput="syncFromInput('jahre')" inputmode="numeric"><span class="input-unit">Jahre</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card szen-a">
+    <span class="szen-badge a">Anlage A</span>
+    <div class="field">
+      <label class="field-label" for="renditeA">Rendite pro Jahr</label>
+      <div class="field-hint">Breit gestreute Aktien-ETFs lagen langfristig im Schnitt bei etwa 6–8 % vor Kosten.</div>
+      <div class="slider-row">
+        <input type="range" id="renditeA" min="0" max="12" step="0.1" value="7" oninput="syncFromSlider('renditeA')">
+        <span class="input-unit-wrap"><input type="number" class="slider-value-input" id="renditeA-val" value="7" step="0.1" oninput="syncFromInput('renditeA')" inputmode="decimal"><span class="input-unit">%</span></span>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label" for="kostenA">Laufende Kosten pro Jahr</label>
+      <div class="field-hint">Günstige ETFs: etwa 0,1–0,3 %.</div>
+      <div class="slider-row">
+        <input type="range" id="kostenA" min="0" max="3" step="0.01" value="0.20" oninput="syncFromSlider('kostenA')">
+        <span class="input-unit-wrap"><input type="number" class="slider-value-input" id="kostenA-val" value="0.20" step="0.01" oninput="syncFromInput('kostenA')" inputmode="decimal"><span class="input-unit">%</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card szen-b">
+    <span class="szen-badge b">Anlage B</span>
+    <div class="field">
+      <label class="field-label" for="renditeB">Rendite pro Jahr</label>
+      <div class="field-hint">Zum Vergleich: Tagesgeld, Sparbuch oder ein teurer Fonds liegen oft deutlich darunter.</div>
+      <div class="slider-row">
+        <input type="range" id="renditeB" class="blue" min="0" max="12" step="0.1" value="2" oninput="syncFromSlider('renditeB')">
+        <span class="input-unit-wrap"><input type="number" class="slider-value-input blue" id="renditeB-val" value="2" step="0.1" oninput="syncFromInput('renditeB')" inputmode="decimal"><span class="input-unit">%</span></span>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label" for="kostenB">Laufende Kosten pro Jahr</label>
+      <div class="field-hint">Aktive Fonds und Versicherungsmäntel liegen oft bei 1,5–2 %.</div>
+      <div class="slider-row">
+        <input type="range" id="kostenB" class="blue" min="0" max="3" step="0.01" value="0.50" oninput="syncFromSlider('kostenB')">
+        <span class="input-unit-wrap"><input type="number" class="slider-value-input blue" id="kostenB-val" value="0.50" step="0.01" oninput="syncFromInput('kostenB')" inputmode="decimal"><span class="input-unit">%</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="field">
+      <label class="field-label">Steuern berücksichtigen</label>
+      <div class="field-hint">Abgeltungsteuer 26,375 % auf Gewinne, mit 30 % Teilfreistellung für Aktienfonds.</div>
+      <div class="toggle-row" id="steuer-toggle" onclick="toggleSteuer()">
+        <span class="toggle-label">Nach Steuern rechnen</span>
+        <span class="toggle-switch"><span class="toggle-knob"></span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="result-hero">
+    <div class="result-hero-label">Unterschied nach <span id="hero-jahre">25</span> Jahren</div>
+    <div class="result-hero-num" id="diff-num">—</div>
+    <div class="result-hero-sub" id="diff-sub">—</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Endkapital im Vergleich</div>
+    <div class="bar-block">
+      <div class="bar-head"><span class="bar-name" style="color:var(--accent);">Anlage A</span><span class="bar-val" id="barA-val" style="color:var(--accent);">—</span></div>
+      <div class="bar-track"><div class="bar-fill" id="barA-fill" style="background:var(--accent); width:0%;"></div></div>
+      <div class="bar-meta" id="barA-meta">—</div>
+    </div>
+    <div class="bar-block" style="margin-bottom:0;">
+      <div class="bar-head"><span class="bar-name" style="color:var(--blue);">Anlage B</span><span class="bar-val" id="barB-val" style="color:var(--blue);">—</span></div>
+      <div class="bar-track"><div class="bar-fill" id="barB-fill" style="background:var(--blue); width:0%;"></div></div>
+      <div class="bar-meta" id="barB-meta">—</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Deine Zahlen im Detail</div>
+    <div id="detail-rows"></div>
+  </div>
+
+  <div class="sep"><div class="sep-line"></div><span class="sep-txt">HINWEISE &amp; ANNAHMEN</span><div class="sep-line"></div></div>
+
+  <div class="card assumptions">
+    <div class="card-title">Annahmen & Hinweise</div>
+    <div class="assumption-item">Gerechnet wird mit einer konstanten jährlichen Rendite und konstanter Sparrate. Echte Märkte schwanken teils erheblich — einzelne Jahre können deutlich im Minus liegen.</div>
+    <div class="assumption-item">Die laufenden Kosten werden direkt von der Rendite abgezogen (Rendite minus Kosten = Nettorendite).</div>
+    <div class="assumption-item">Sparraten fließen jährlich vorschüssig ein. Das ist eine Vereinfachung gegenüber monatlicher Einzahlung.</div>
+    <div class="assumption-item">Bei aktivierter Steuer: 26,375 % Abgeltungsteuer inklusive Soli auf die Gewinne, mit 30 % Teilfreistellung für Aktienfonds. Kirchensteuer, Sparerpauschbetrag und Vorabpauschale sind nicht berücksichtigt.</div>
+    <div class="assumption-item">Inflation ist nicht eingerechnet — die Beträge sind nominal, ihre Kaufkraft ist in vielen Jahren geringer.</div>
+    <div class="assumption-item">Vereinfachte Modellrechnung zur Orientierung, keine Anlageberatung und keine Renditeprognose.</div>
+  </div>
+
+  <div class="cta">
+    <p>Wie viel Förderung bekommst du im neuen Altersvorsorgedepot?</p>
+    <a href="altersvorsorgedepot-rechner.html">Zum Förder-Rechner</a>
+  </div>
+
+  <div class="stand">Stand der Berechnung: 2026</div>
+  <div class="disclaimer">
+    Diese Website stellt keine Finanz-, Steuer- oder Anlageberatung dar. Alle Angaben ohne Gewähr. Vergangene Renditen sind kein verlässlicher Indikator für die Zukunft.
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <strong style="color:white;">KapitalPlan</strong> — <a href="index.html">Alle Rechner</a><br><br>
+    Robert Meyer — Paulinenallee 15 — 22769 Hamburg — rpmax.meyer@gmail.com<br>
+    Diese Website stellt keine Finanz-, Steuer- oder Rechtsberatung dar. Alle Angaben ohne Gewähr. Stand: 2026.<br>
+    © 2026 KapitalPlan
+  </div>
+</footer>
+
+<script>
+let mitSteuer = false;
+
+function toggleSteuer(){
+  mitSteuer = !mitSteuer;
+  document.getElementById('steuer-toggle').classList.toggle('active', mitSteuer);
+  rechne();
+}
+
+function fmt(n){ return Math.round(n).toLocaleString('de-DE') + ' €'; }
+
+function simuliere(einmal, rate, jahre, rendite, kosten){
+  const r = (rendite - kosten) / 100;
+  let kapital = einmal;
+  const jahresRate = rate * 12;
+  for (let j = 0; j < jahre; j++){
+    kapital = (kapital + jahresRate) * (1 + r);
+  }
+  const eingezahlt = einmal + jahresRate * jahre;
+  return { kapital, eingezahlt, gewinn: kapital - eingezahlt };
+}
+
+function nachSteuern(res){
+  if (!mitSteuer) return res.kapital;
+  const steuer = Math.max(0, res.gewinn) * 0.70 * 0.26375;
+  return res.kapital - steuer;
+}
+
+// Regler bewegt -> Zahlenfeld uebernimmt den Wert
+function syncFromSlider(id){
+  document.getElementById(id + '-val').value = document.getElementById(id).value;
+  rechne();
+}
+
+// Zahl eingetippt -> Regler springt mit (inkl. Begrenzung auf min/max)
+function syncFromInput(id){
+  const slider = document.getElementById(id);
+  const field = document.getElementById(id + '-val');
+  let v = parseFloat(field.value);
+  if (isNaN(v)) return;
+  const min = parseFloat(slider.min), max = parseFloat(slider.max);
+  if (v < min) v = min;
+  if (v > max) v = max;
+  slider.value = v;
+  rechne();
+}
+
+function rechne(){
+  const einmal = parseInt(document.getElementById('einmal').value);
+  const rate = parseInt(document.getElementById('rate').value);
+  const jahre = parseInt(document.getElementById('jahre').value);
+  const rA = parseFloat(document.getElementById('renditeA').value);
+  const kA = parseFloat(document.getElementById('kostenA').value);
+  const rB = parseFloat(document.getElementById('renditeB').value);
+  const kB = parseFloat(document.getElementById('kostenB').value);
+
+  document.getElementById('hero-jahre').textContent = jahre;
+
+  const resA = simuliere(einmal, rate, jahre, rA, kA);
+  const resB = simuliere(einmal, rate, jahre, rB, kB);
+  const endA = nachSteuern(resA);
+  const endB = nachSteuern(resB);
+
+  const diff = endA - endB;
+  const max = Math.max(endA, endB, 1);
+
+  document.getElementById('diff-num').textContent = (diff >= 0 ? '+ ' : '− ') + fmt(Math.abs(diff));
+  const suffix = mitSteuer ? ' (nach Steuern)' : '';
+  document.getElementById('diff-sub').textContent = diff >= 0
+    ? `Anlage A liegt vorn${suffix} — bei ${fmt(resA.eingezahlt)} Einzahlung`
+    : `Anlage B liegt vorn${suffix} — bei ${fmt(resB.eingezahlt)} Einzahlung`;
+
+  document.getElementById('barA-val').textContent = fmt(endA);
+  document.getElementById('barA-fill').style.width = Math.max(2, (endA/max)*100) + '%';
+  document.getElementById('barA-meta').textContent =
+    `${rA.toLocaleString('de-DE',{minimumFractionDigits:1})} % − ${kA.toLocaleString('de-DE',{minimumFractionDigits:2})} % Kosten = ${(rA-kA).toFixed(2).replace('.',',')} % netto`;
+
+  document.getElementById('barB-val').textContent = fmt(endB);
+  document.getElementById('barB-fill').style.width = Math.max(2, (endB/max)*100) + '%';
+  document.getElementById('barB-meta').textContent =
+    `${rB.toLocaleString('de-DE',{minimumFractionDigits:1})} % − ${kB.toLocaleString('de-DE',{minimumFractionDigits:2})} % Kosten = ${(rB-kB).toFixed(2).replace('.',',')} % netto`;
+
+  const rows = [
+    { l: 'Selbst eingezahlt', v: fmt(resA.eingezahlt) },
+    { l: 'Gewinn Anlage A', v: fmt(resA.gewinn) },
+    { l: 'Gewinn Anlage B', v: fmt(resB.gewinn) }
+  ];
+  if (mitSteuer){
+    rows.push({ l: 'Steuer Anlage A', v: '− ' + fmt(Math.max(0,resA.gewinn)*0.70*0.26375) });
+    rows.push({ l: 'Steuer Anlage B', v: '− ' + fmt(Math.max(0,resB.gewinn)*0.70*0.26375) });
+  }
+  document.getElementById('detail-rows').innerHTML = rows.map(r => `
+    <div class="brow"><span class="blabel">${r.l}</span><span class="bval">${r.v}</span></div>`).join('');
+}
+
+rechne();
+</script>
+
+</body>
+</html>
